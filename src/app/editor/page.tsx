@@ -19,7 +19,7 @@ export default function EditorPage() {
         <input
           value={chart.title}
           onChange={(e) => setTitle(e.target.value)}
-          className="min-w-0 flex-1 text-2xl font-bold outline-none"
+          className="min-w-0 flex-1 font-title text-2xl outline-none"
         />
         <Link href="/preview">
           <Button>Done!</Button>

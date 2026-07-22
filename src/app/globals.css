@@ -2,12 +2,21 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/variable/pretendardvariable-dynamic-subset.css");
 @import "tailwindcss";
 
+/* 타이틀 전용 폰트: 느림보고딕 */
+@font-face {
+  font-family: "SlowGothic";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-01@1.0/neurimboGothicRegular.woff2")
+    format("woff2");
+  font-weight: normal;
+  font-display: swap;
+}
+
 :root {
   /* 앱(모바일 프레임) 내부 색 */
   --background: #ffffff;
   --foreground: #171717;
   /* 프레임 바깥(노트북에서 보이는 여백) 색 */
-  --frame-outside: #e8eaed;
+  --frame-outside: #ffffff;
   /* 앱 고정 폭 (iPhone 기준) */
   --app-width: 390px;
 }
@@ -15,9 +24,13 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  /* 공통 파란색 */
+  --color-primary: #007aff;
   /* 기본 폰트 = Pretendard */
   --font-sans: "Pretendard Variable", Pretendard, -apple-system, system-ui,
     sans-serif;
+  /* 타이틀 폰트 = SlowGothic */
+  --font-title: "SlowGothic", "Pretendard Variable", sans-serif;
 }
 
 html,
@@ -29,4 +42,22 @@ body {
   background: var(--frame-outside);
   color: var(--foreground);
   font-family: var(--font-sans);
+}
+
+/* 페이지 전환 애니메이션 */
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.page-enter {
+  animation: pageEnter 0.4s ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .page-enter {
+    animation: none;
+  }
 }

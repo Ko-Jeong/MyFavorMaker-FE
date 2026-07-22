@@ -63,7 +63,7 @@ export default function CharacterCardEdit({ card }: { card: CharacterCard }) {
               value={card.leftPercent}
               onChange={(e) => setLeftPercent(e.target.value)}
               inputMode="numeric"
-              className="w-8 border-b border-zinc-300 text-center font-bold text-zinc-900 outline-none focus:border-blue-400"
+              className="w-8 border-b border-zinc-300 text-center font-bold text-zinc-900 outline-none focus:border-primary"
             />
             % | 른{" "}
             <span className="font-bold text-zinc-900">{rightPercent(card)}%</span>
@@ -80,7 +80,7 @@ export default function CharacterCardEdit({ card }: { card: CharacterCard }) {
       <input
         value={card.comment ?? ""}
         onChange={(e) => updateCard(card.id, { comment: e.target.value })}
-        className="mt-3 w-full rounded-md border border-zinc-200 px-2 py-1 text-sm outline-none focus:border-blue-400"
+        className="mt-3 w-full rounded-md border border-zinc-200 px-2 py-1 text-sm outline-none focus:border-primary"
         placeholder="+ 코멘트 추가"
       />
     </Card>

@@ -24,7 +24,7 @@ export default function ExportPage() {
 
   return (
     <div className="flex flex-1 flex-col px-5 py-6">
-      <h1 className="text-2xl font-bold">취향표 저장과 공유</h1>
+      <h1 className="font-title text-2xl">취향표 저장과 공유</h1>
       <p className="mt-2 text-sm text-zinc-500">사진을 눌러 확인해 보세요!</p>
 
       {/* 캡처 대상 영역 */}
@@ -43,7 +43,7 @@ export default function ExportPage() {
           onClick={handleSave}
           className="flex flex-col items-center gap-2 text-xs text-zinc-600"
         >
-          <span className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-600 text-white">
+          <span className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-white">
             ↓
           </span>
           취향표
