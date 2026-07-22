@@ -19,14 +19,15 @@ function Waveform() {
 
 /**
  * 랜딩 페이지
- * 채팅형 인트로 → CREATE YOURS 로 /charts 진입
  */
 export default function LandingPage() {
   return (
-    <div className="flex flex-1 flex-col justify-center px-7 py-6">
-      {/* 채팅 + CTA 를 한 묶음으로, 세로 중앙 정렬 */}
+    <Link
+      href="/charts"
+      className="flex flex-1 flex-col justify-center px-7 py-6"
+    >
       <div className="flex flex-col gap-3">
-        <div className="max-w-[78%] self-start rounded-3xl bg-zinc-200 px-5 py-2 text-[17px]">
+        <div className="max-w-[78%] self-start rounded-3xl bg-[#E6E5EB] px-5 py-2 text-[17px]">
           너 왜 눈을 CP렇게 떠?
         </div>
         <div className="max-w-[78%] self-end rounded-4xl bg-primary px-5 py-2 text-[17px] text-white">
@@ -37,21 +38,18 @@ export default function LandingPage() {
           <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white">
             <Play className="h-4 w-4 fill-primary text-primary" />
           </span>
-          {/* 음성 파형 (막대로 표현) */}
+          {/* 음성 파형 */}
           <Waveform />
           <span className="text-sm opacity-66">01:54:45</span>
         </div>
 
-        {/* CREATE YOURS — 말풍선 바로 아래 */}
         <div className="mt-6 flex flex-col items-center gap-1">
-          <div className="rounded-[50px] bg-zinc-100 px-6 py-1 font-title text-[20px] text-[#414141]">
+          <div className="rounded-[50px] bg-[#E6E5EB]/30 px-6 py-1 font-title text-[20px] text-[#414141]">
             CREATE YOURS
           </div>
-          <Link href="/charts" className="font-title text-[17px] text-primary">
-            click!
-          </Link>
+          <span className="font-title text-[17px] text-primary">click!</span>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
