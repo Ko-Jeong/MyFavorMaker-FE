@@ -33,7 +33,7 @@ export default function ChartsPage() {
     <div className="flex flex-1 flex-col px-5 py-6">
       {/* 헤더 */}
       <div className="flex items-start justify-between">
-        <h1 className="text-2xl font-bold">불러오기</h1>
+        <h1 className="font-title text-2xl">불러오기</h1>
         <Button onClick={createNew}>+ new</Button>
       </div>
       <p className="mt-2 text-sm text-zinc-500">

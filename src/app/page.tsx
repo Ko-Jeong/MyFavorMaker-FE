@@ -12,20 +12,20 @@ export default function LandingPage() {
         <div className="max-w-[70%] self-start rounded-2xl bg-zinc-200 px-4 py-2 text-sm">
           너 왜 눈을 CP렇게 떠?
         </div>
-        <div className="max-w-[70%] self-end rounded-2xl bg-blue-600 px-4 py-2 text-sm text-white">
+        <div className="max-w-[70%] self-end rounded-2xl bg-primary px-4 py-2 text-sm text-white">
           설명해줄게
         </div>
-        <div className="max-w-[70%] self-end rounded-2xl bg-blue-600 px-4 py-2 text-sm text-white">
+        <div className="max-w-[70%] self-end rounded-2xl bg-primary px-4 py-2 text-sm text-white">
           ▶ ·ı|ııı|ıı·&nbsp;&nbsp;&nbsp;01:54:45
         </div>
       </div>
 
       {/* CTA */}
       <div className="flex flex-col items-center gap-1 pb-10">
-        <div className="rounded-full border border-zinc-300 px-5 py-2 text-sm font-semibold">
+        <div className="rounded-full border border-zinc-300 px-5 py-2 font-title text-base">
           CREATE YOURS
         </div>
-        <Link href="/charts" className="text-sm font-semibold text-blue-600">
+        <Link href="/charts" className="text-sm font-semibold text-primary">
           click!
         </Link>
       </div>

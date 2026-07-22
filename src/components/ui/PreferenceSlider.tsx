@@ -15,11 +15,11 @@ export default function PreferenceSlider({
       <span className="text-xs text-zinc-500">왼</span>
       <div className="relative h-1 flex-1 rounded-full bg-zinc-200">
         <div
-          className="absolute left-0 top-0 h-full rounded-full bg-blue-600"
+          className="absolute left-0 top-0 h-full rounded-full bg-primary"
           style={{ width: `${clamped}%` }}
         />
         <div
-          className="absolute top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-600"
+          className="absolute top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary"
           style={{ left: `${clamped}%` }}
         />
       </div>
