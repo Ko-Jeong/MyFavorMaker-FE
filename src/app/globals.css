@@ -16,7 +16,7 @@
   --background: #ffffff;
   --foreground: #171717;
   /* 프레임 바깥(노트북에서 보이는 여백) 색 */
-  --frame-outside: #e8eaed;
+  --frame-outside: #ffffff;
   /* 앱 고정 폭 (iPhone 기준) */
   --app-width: 390px;
 }
