@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { chartList, getGroup } from "@/data/charts";
 import { groupToChart } from "@/types/chart";
@@ -11,14 +12,15 @@ import { useChartStore } from "@/store/useChartStore";
 export default function ChartsPage() {
   const router = useRouter();
   const { loadChart, reset } = useChartStore();
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const openChart = (id: string) => {
     const group = getGroup(id);
-    if (group) {
-      // 그룹 명단 → 왼% 0 인 빈 카드로 변환해 편집 화면으로
-      loadChart(groupToChart(group));
-      router.push("/editor");
-    }
+    if (!group) return;
+    setSelectedId(id);
+    loadChart(groupToChart(group));
+    // 색 전환이 보이도록 딜레이 주고 이동
+    setTimeout(() => router.push("/editor"), 280);
   };
 
   const createNew = () => {
@@ -49,7 +51,9 @@ export default function ChartsPage() {
           <li key={item.id}>
             <button
               onClick={() => openChart(item.id)}
-              className="block w-full rounded-[12px] bg-white px-[14px] py-[14px] text-left text-[16px] font-semibold text-[#363636] shadow-[0px_0px_2px_rgba(0,0,0,0.1)]"
+              className={`block w-full rounded-[12px] bg-white px-[14px] py-[14px] text-left text-[16px] font-semibold shadow-[0px_0px_2px_rgba(0,0,0,0.1)] transition-colors duration-300 ${
+                selectedId === item.id ? "text-primary" : "text-[#363636]"
+              }`}
             >
               {item.title}
             </button>
