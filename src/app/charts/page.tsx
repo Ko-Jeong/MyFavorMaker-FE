@@ -27,9 +27,9 @@ export default function ChartsPage() {
   };
 
   return (
-    <div className="flex flex-1 flex-col px-7 py-6">
-      {/* 헤더 */}
-      <div className="flex items-start justify-between">
+    <div className="flex h-dvh flex-col px-7 py-6">
+      {/* 헤더 (고정) */}
+      <div className="flex shrink-0 items-start justify-between">
         <h1 className="font-title text-[30px]">불러오기</h1>
         <button
           onClick={createNew}
@@ -38,18 +38,18 @@ export default function ChartsPage() {
           + new
         </button>
       </div>
-      <p className="mt-2 text-[16px] font-semibold leading-[22px] text-[#363636]">
+      <p className="mt-2 shrink-0 text-[16px] font-semibold leading-[22px] text-[#363636]">
         미리 등록된 취향표를 불러오거나
         <br />새 취향표를 만들 수 있어요
       </p>
 
-      {/* 목록 */}
-      <ul className="mt-6 flex flex-col gap-3">
+      {/* 목록 (이 영역만 스크롤) — 음수 마진+패딩으로 박스 그림자 잘림 방지 */}
+      <ul className="mt-6 -mx-1 flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto px-1 py-1">
         {chartList.map((item) => (
           <li key={item.id}>
             <button
               onClick={() => openChart(item.id)}
-              className="block w-full rounded-[10px] bg-white px-[15px] py-[15px] text-left text-[16px] font-semibold text-[#363636] shadow-[0px_0px_2px_rgba(0,0,0,0.1)]"
+              className="block w-full rounded-[12px] bg-white px-[14px] py-[14px] text-left text-[16px] font-semibold text-[#363636] shadow-[0px_0px_2px_rgba(0,0,0,0.1)]"
             >
               {item.title}
             </button>
