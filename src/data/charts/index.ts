@@ -58,8 +58,10 @@ export const groups: IdolGroup[] = [
 ];
 // ▲▲▲ 목록/불러오기는 아래에서 자동 생성됩니다 ▲▲▲
 
-/** 불러오기 화면용 목록 (데이터에서 자동 파생) */
-export const chartList = groups.map(({ id, title }) => ({ id, title }));
+/** 불러오기 화면용 목록 (사전순 ABC 정렬) */
+export const chartList = groups
+  .map(({ id, title }) => ({ id, title }))
+  .sort((a, b) => a.title.localeCompare(b.title, "en"));
 
 /** id로 그룹 명단 하나 찾기 */
 export const getGroup = (id: string): IdolGroup | undefined =>
