@@ -57,9 +57,14 @@ export const groupToChart = (group: IdolGroup): Chart => ({
 export const rightPercent = (card: CharacterCard): number =>
   100 - card.leftPercent;
 
+export const uid = (): string =>
+  typeof crypto !== "undefined" && "randomUUID" in crypto
+    ? crypto.randomUUID()
+    : `id-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+
 /** 빈 카드 하나 생성 (왼% = 0 에서 시작) */
 export const createEmptyCard = (): CharacterCard => ({
-  id: crypto.randomUUID(),
+  id: uid(),
   name: "name",
   leftPercent: 0,
   comment: "",
