@@ -44,7 +44,7 @@ export default function ChartsPage() {
       </p>
 
       {/* 목록 (이 영역만 스크롤) — 음수 마진+패딩으로 박스 그림자 잘림 방지 */}
-      <ul className="mt-6 -mx-1 flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto px-1 py-1">
+      <ul className="no-scrollbar mt-6 -mx-1 flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto px-1 py-1">
         {chartList.map((item) => (
           <li key={item.id}>
             <button
