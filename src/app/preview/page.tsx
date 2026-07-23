@@ -13,7 +13,7 @@ export default function PreviewPage() {
   const { chart } = useChartStore();
 
   return (
-    <div className="flex flex-1 flex-col px-5 py-6">
+    <div className="screen-pad flex flex-1 flex-col">
       <h1 className="font-title text-2xl">미리보기</h1>
       <p className="mt-2 text-sm text-zinc-500">카드 내용과 순서를 확인해주세요</p>
 

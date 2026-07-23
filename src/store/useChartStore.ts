@@ -3,6 +3,7 @@ import {
   type Chart,
   type CharacterCard,
   createEmptyCard,
+  uid,
 } from "@/types/chart";
 
 // editor -> preview -> export 로 페이지가 넘어가도
@@ -21,7 +22,7 @@ interface ChartState {
 }
 
 const emptyChart = (): Chart => ({
-  id: crypto.randomUUID(),
+  id: uid(),
   title: "나의 취향표",
   cards: [createEmptyCard()],
 });

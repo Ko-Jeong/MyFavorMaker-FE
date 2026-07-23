@@ -61,3 +61,17 @@ body {
     animation: none;
   }
 }
+
+/* 스크롤바 숨김 */
+.no-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+/* 모든 화면 공통 패딩 — 여기 한 곳만 바꾸면 전체 페이지에 반영됨 */
+@utility screen-pad {
+  padding: 1.5rem 1.75rem; /* 상하 24px(py-6) · 좌우 28px(px-7) */
+}

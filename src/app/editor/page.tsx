@@ -13,7 +13,7 @@ export default function EditorPage() {
   const { chart, setTitle, addCard } = useChartStore();
 
   return (
-    <div className="flex flex-1 flex-col px-5 py-6">
+    <div className="screen-pad flex flex-1 flex-col">
       {/* 헤더: 제목 + Done */}
       <div className="flex items-center justify-between gap-2">
         <input

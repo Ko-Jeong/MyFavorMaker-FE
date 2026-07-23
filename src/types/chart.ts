@@ -24,10 +24,9 @@ export interface Chart {
 
 // ── 불러오기용: 미리 등록된 그룹 명단 (이름 + 사진만) ──────────────
 
-/** 그룹 멤버 = 이름(+사진). 비율/코멘트는 없음 (편집에서 입력) */
 export interface GroupMember {
-  id: string;
   name: string;
+  id?: string;
   /** 사진 URL (기능은 추후) */
   photoUrl?: string;
 }
@@ -43,8 +42,8 @@ export interface IdolGroup {
 export const groupToChart = (group: IdolGroup): Chart => ({
   id: group.id,
   title: group.title,
-  cards: group.members.map((m) => ({
-    id: m.id,
+  cards: group.members.map((m, i) => ({
+    id: m.id ?? `${group.id}-${i}`, // id 없으면 자동 생성
     name: m.name,
     photoUrl: m.photoUrl,
     leftPercent: 0,
@@ -58,9 +57,14 @@ export const groupToChart = (group: IdolGroup): Chart => ({
 export const rightPercent = (card: CharacterCard): number =>
   100 - card.leftPercent;
 
+export const uid = (): string =>
+  typeof crypto !== "undefined" && "randomUUID" in crypto
+    ? crypto.randomUUID()
+    : `id-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+
 /** 빈 카드 하나 생성 (왼% = 0 에서 시작) */
 export const createEmptyCard = (): CharacterCard => ({
-  id: crypto.randomUUID(),
+  id: uid(),
   name: "name",
   leftPercent: 0,
   comment: "",
