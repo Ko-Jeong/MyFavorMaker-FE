@@ -1,7 +1,7 @@
-/* eslint-disable @next/next/no-img-element */
 import { type CharacterCard, rightPercent } from "@/types/chart";
 import PreferenceSlider from "@/components/ui/PreferenceSlider";
 import Card from "@/components/ui/Card";
+import MemberPhoto from "@/components/chart/MemberPhoto";
 
 /**
  * 읽기전용 카드 (미리보기 / 내보내기 화면).
@@ -13,13 +13,11 @@ export default function CharacterCardView({ card }: { card: CharacterCard }) {
       <div className="flex items-center gap-3">
         {/* 사진 */}
         <div className="h-11 w-11 shrink-0 overflow-hidden rounded-full bg-zinc-200">
-          {card.photoUrl && (
-            <img
-              src={card.photoUrl}
-              alt={card.name}
-              className="h-full w-full object-cover"
-            />
-          )}
+          <MemberPhoto
+            src={card.photoUrl}
+            alt={card.name}
+            className="h-full w-full object-cover"
+          />
         </div>
         <div>
           {/* 이름 */}

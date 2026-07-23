@@ -6,11 +6,11 @@ export const boynextdoor: IdolGroup = {
   id: "boynextdoor",
   title: "BOYNEXTDOOR",
   members: [
-    { id: "sungho", name: "성호" },
-    { id: "riwoo", name: "리우" },
-    { id: "jaehyun", name: "재현" },
-    { id: "taesan", name: "태산" },
-    { id: "leehan", name: "이한" },
-    { id: "woonhak", name: "운학" },
+    { id: "sungho", name: "성호", photoUrl: "/photos/boynextdoor/1.jpg" },
+    { id: "riwoo", name: "리우", photoUrl: "/photos/boynextdoor/2.jpg" },
+    { id: "jaehyun", name: "재현", photoUrl: "/photos/boynextdoor/3.jpg" },
+    { id: "taesan", name: "태산", photoUrl: "/photos/boynextdoor/4.jpg" },
+    { id: "leehan", name: "이한", photoUrl: "/photos/boynextdoor/5.jpg" },
+    { id: "woonhak", name: "운학", photoUrl: "/photos/boynextdoor/6.jpg" },
   ],
 };
