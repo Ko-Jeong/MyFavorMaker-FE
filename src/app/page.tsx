@@ -24,7 +24,7 @@ export default function LandingPage() {
   return (
     <Link
       href="/charts"
-      className="flex flex-1 flex-col justify-center px-7 py-6"
+      className="screen-pad flex flex-1 flex-col justify-center"
     >
       <div className="flex flex-col gap-3">
         <div className="max-w-[78%] self-start rounded-3xl bg-[#E6E5EB] px-5 py-2 text-[17px]">

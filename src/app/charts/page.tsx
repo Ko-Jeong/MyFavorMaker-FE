@@ -29,7 +29,7 @@ export default function ChartsPage() {
   };
 
   return (
-    <div className="flex h-dvh flex-col px-7 py-6">
+    <div className="screen-pad flex h-dvh flex-col">
       {/* 헤더 (고정) */}
       <div className="flex shrink-0 items-start justify-between">
         <h1 className="font-title text-[30px]">불러오기</h1>
