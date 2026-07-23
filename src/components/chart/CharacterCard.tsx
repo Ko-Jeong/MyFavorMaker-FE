@@ -1,10 +1,10 @@
 "use client";
 
-/* eslint-disable @next/next/no-img-element */
 import { type CharacterCard, rightPercent } from "@/types/chart";
 import { useChartStore } from "@/store/useChartStore";
 import PreferenceSlider from "@/components/ui/PreferenceSlider";
 import Card from "@/components/ui/Card";
+import MemberPhoto from "@/components/chart/MemberPhoto";
 
 /**
  * 편집용 카드 (editor 화면).
@@ -38,7 +38,7 @@ export default function CharacterCardEdit({ card }: { card: CharacterCard }) {
           aria-label="사진 추가"
         >
           {card.photoUrl ? (
-            <img
+            <MemberPhoto
               src={card.photoUrl}
               alt={card.name}
               className="h-full w-full rounded-full object-cover"
