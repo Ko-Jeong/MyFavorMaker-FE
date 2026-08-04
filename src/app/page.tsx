@@ -22,7 +22,7 @@ function Bubble({
 
 export default function LandingPage() {
   return (
-    <div className="screen-pad flex flex-1 flex-col justify-center">
+    <div className="screen-pad flex flex-1 select-none flex-col justify-center">
       <div className="flex flex-col gap-5">
         <Bubble
           src="/landing/left-bubble.svg"
@@ -70,7 +70,7 @@ export default function LandingPage() {
         </div>
 
         <div className="mt-6 flex flex-col items-center gap-1">
-          <div className="rounded-[50px] bg-[#E6E5EB]/30 px-6 py-1 font-title text-[20px] text-[#414141]">
+          <div className="rounded-[50px] bg-[#E6E5EB]/30 px-6 pt-1 pb-0.4 font-title text-[19px] text-[#414141]">
             CREATE YOURS
           </div>
           <Link href="/charts" className="font-title text-[17px] text-primary">
