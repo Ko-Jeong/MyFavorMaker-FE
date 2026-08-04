@@ -30,7 +30,7 @@ export default function ChartsPage() {
   };
 
   return (
-    <div className="screen-pad flex h-dvh flex-col">
+    <div className="screen-pad select-none flex h-dvh flex-col">
       {/* 헤더 (고정) */}
       <div className="relative shrink-0 pr-[84px]">
         <h1 className="font-title text-[30px]">불러오기</h1>
