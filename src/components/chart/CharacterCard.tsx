@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, type ChangeEvent } from "react";
-import { Camera } from "lucide-react";
+import { Camera, X } from "lucide-react";
 import { type CharacterCard, rightPercent } from "@/types/chart";
 import { useChartStore } from "@/store/useChartStore";
 import PreferenceSlider from "@/components/ui/PreferenceSlider";
@@ -51,7 +51,7 @@ export default function CharacterCardEdit({ card }: { card: CharacterCard }) {
         className="absolute right-3 top-3 text-zinc-400 hover:text-zinc-600"
         aria-label="카드 삭제"
       >
-        ✕
+        <X className="h-3.5 w-3.5" aria-hidden="true" />
       </button>
 
       <div className="flex items-center gap-3">
