@@ -94,6 +94,8 @@ export default function EditorPage() {
   const titleInputRef = useRef<HTMLInputElement>(null);
   const titleMeasureRef = useRef<HTMLSpanElement>(null);
   const [titleWidth, setTitleWidth] = useState<number>(0);
+  const trimmedTitle = chart.title.trim();
+  const displayTitle = trimmedTitle || "Title";
   const sensors = useSensors(
     useSensor(CustomMouseSensor, {
       activationConstraint: { distance: 8 },
@@ -160,7 +162,7 @@ export default function EditorPage() {
               ref={titleMeasureRef}
               className="pointer-events-none absolute -z-10 whitespace-pre font-title text-[30px] opacity-0"
             >
-              {chart.title}
+              {displayTitle}
             </span>
             {isEditingTitle ? (
               <input
@@ -169,11 +171,20 @@ export default function EditorPage() {
                 onChange={(e) => setTitle(e.target.value)}
                 onBlur={() => setIsEditingTitle(false)}
                 onKeyDown={stopTitleEditOnEnter}
-                className="w-full min-w-0 font-title text-[30px] outline-none"
+                className="w-full min-w-0 font-title text-[30px] text-zinc-900 placeholder:text-zinc-400 outline-none"
                 style={{ width: `${Math.max(titleWidth + 2, 12)}px` }}
+                placeholder="Title"
               />
             ) : (
-              <h1 className="truncate font-title text-[30px]">{chart.title}</h1>
+              <h1
+                className={
+                  trimmedTitle
+                    ? "truncate font-title text-[30px] text-zinc-900"
+                    : "truncate font-title text-[30px] text-zinc-400"
+                }
+              >
+                {displayTitle}
+              </h1>
             )}
           </div>
           <button

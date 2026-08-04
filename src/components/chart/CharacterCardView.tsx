@@ -38,7 +38,9 @@ export default function CharacterCardView({ card }: { card: CharacterCard }) {
 
       {/* 코멘트 */}
       {card.comment && (
-        <p className="mt-3 text-sm text-zinc-600">{card.comment}</p>
+        <p className="mt-3 whitespace-pre-wrap text-sm text-zinc-600">
+          {card.comment}
+        </p>
       )}
     </Card>
   );

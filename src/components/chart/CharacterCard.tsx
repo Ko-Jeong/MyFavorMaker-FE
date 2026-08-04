@@ -28,6 +28,7 @@ export default function CharacterCardEdit({ card }: { card: CharacterCard }) {
   const [isEditingName, setIsEditingName] = useState(false);
   const [isEditingComment, setIsEditingComment] = useState(false);
   const [nameWidth, setNameWidth] = useState<number>(0);
+  const displayName = card.name.trim() ? card.name : "name";
 
   const setLeftPercent = (raw: string) => {
     const n = Number(raw.replace(/[^0-9]/g, ""));
@@ -136,7 +137,7 @@ export default function CharacterCardEdit({ card }: { card: CharacterCard }) {
                 ref={nameMeasureRef}
                 className="pointer-events-none absolute -z-10 whitespace-pre font-semibold opacity-0"
               >
-                {card.name}
+                {displayName}
               </span>
               {isEditingName ? (
                 <input
@@ -145,11 +146,20 @@ export default function CharacterCardEdit({ card }: { card: CharacterCard }) {
                   onChange={(e) => updateCard(card.id, { name: e.target.value })}
                   onBlur={() => setIsEditingName(false)}
                   onKeyDown={stopNameEditOnEnter}
-                  className="w-full min-w-0 font-semibold text-zinc-900 outline-none"
+                  className="w-full min-w-0 bg-transparent p-0 font-semibold text-zinc-900 placeholder:text-zinc-400 outline-none"
                   style={{ width: `${Math.max(nameWidth + 2, 12)}px` }}
+                  placeholder="name"
                 />
               ) : (
-                <p className="truncate font-semibold text-zinc-900">{card.name}</p>
+                <p
+                  className={
+                    card.name.trim()
+                      ? "truncate font-semibold text-zinc-900"
+                      : "truncate font-semibold text-zinc-400"
+                  }
+                >
+                  {displayName}
+                </p>
               )}
             </div>
             <button
@@ -195,13 +205,19 @@ export default function CharacterCardEdit({ card }: { card: CharacterCard }) {
             onChange={setComment}
             onBlur={() => setIsEditingComment(false)}
             rows={1}
-            className="w-full resize-none overflow-hidden rounded-md border border-zinc-200 px-2 py-1 text-sm outline-none focus:border-primary"
-            placeholder="+ 코멘트 추가"
+            className="w-full resize-none overflow-hidden bg-transparent text-sm text-zinc-600 outline-none"
+            placeholder="+ comment"
           />
         ) : (
-          <div className="flex w-full items-center justify-between rounded-md border border-zinc-200 px-2 py-1 text-sm text-zinc-400">
-            <span className={card.comment?.trim() ? "text-zinc-600" : ""}>
-              {card.comment?.trim() ? card.comment : "+ 코멘트 추가"}
+          <div className="inline-flex items-end gap-1.5 text-sm text-zinc-400">
+            <span
+              className={
+                card.comment?.trim()
+                  ? "whitespace-pre-wrap text-zinc-600"
+                  : "whitespace-pre-wrap"
+              }
+            >
+              {card.comment?.trim() ? card.comment : "+ comment"}
             </span>
             <button
               type="button"
