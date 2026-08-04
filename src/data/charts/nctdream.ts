@@ -4,7 +4,6 @@ export const nctdream: IdolGroup = {
   id: "nctdream",
   title: "NCT DREAM",
   members: [
-    { name: "마크", photoUrl: "/photos/nctdream/1.jpg" },
     { name: "런쥔", photoUrl: "/photos/nctdream/2.jpg" },
     { name: "제노", photoUrl: "/photos/nctdream/3.jpg" },
     { name: "해찬", photoUrl: "/photos/nctdream/4.jpg" },

@@ -12,7 +12,6 @@ export const theboyz: IdolGroup = {
     { name: "케빈", photoUrl: "/photos/theboyz/6.jpg" },
     { name: "뉴", photoUrl: "/photos/theboyz/7.jpg" },
     { name: "큐", photoUrl: "/photos/theboyz/8.jpg" },
-    { name: "학년", photoUrl: "/photos/theboyz/9.jpg" },
     { name: "선우", photoUrl: "/photos/theboyz/10.jpg" },
     { name: "에릭", photoUrl: "/photos/theboyz/11.jpg" },
   ],
