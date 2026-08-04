@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const swapExt = (url: string): string | null => {
   if (url.endsWith(".jpg")) return url.slice(0, -4) + ".jpeg";
@@ -17,13 +17,29 @@ export default function MemberPhoto({
   alt: string;
   className?: string;
 }) {
+  if (!src) return null;
+
+  return (
+    <MemberPhotoImage
+      key={src}
+      src={src}
+      alt={alt}
+      className={className}
+    />
+  );
+}
+
+function MemberPhotoImage({
+  src,
+  alt,
+  className,
+}: {
+  src?: string;
+  alt: string;
+  className: string;
+}) {
   const [cur, setCur] = useState<string | undefined>(src);
   const [swapped, setSwapped] = useState(false);
-
-  useEffect(() => {
-    setCur(src);
-    setSwapped(false);
-  }, [src]);
 
   if (!cur) return null;
 

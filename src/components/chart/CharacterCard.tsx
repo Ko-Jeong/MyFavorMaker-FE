@@ -38,6 +38,7 @@ export default function CharacterCardEdit({ card }: { card: CharacterCard }) {
     <Card className="relative">
       {/* 삭제 버튼 */}
       <button
+        type="button"
         onClick={() => removeCard(card.id)}
         className="absolute right-3 top-3 text-zinc-400 hover:text-zinc-600"
         aria-label="카드 삭제"
