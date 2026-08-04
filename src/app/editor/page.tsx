@@ -131,14 +131,17 @@ export default function EditorPage() {
             onPointerCancel={clearPressTimer}
             className={
               draggingCardId === card.id
-                ? "scale-[1.01] opacity-80 shadow-sm transition"
-                : "transition"
+                ? "relative scale-[1.01] transition"
+                : "relative transition"
             }
             style={{
               touchAction: draggingCardId === card.id ? "none" : "pan-y",
             }}
           >
             <CharacterCardEdit card={card} />
+            {draggingCardId === card.id && (
+              <div className="pointer-events-none absolute inset-0 rounded-2xl bg-zinc-200/25 ring-1 ring-zinc-200" />
+            )}
           </div>
         ))}
 
