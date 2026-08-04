@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import { Camera } from "lucide-react";
 import { type CharacterCard, rightPercent } from "@/types/chart";
 import { useChartStore } from "@/store/useChartStore";
 import PreferenceSlider from "@/components/ui/PreferenceSlider";
@@ -61,7 +62,7 @@ export default function CharacterCardEdit({ card }: { card: CharacterCard }) {
               className="h-full w-full rounded-full object-cover"
             />
           ) : (
-            "📷"
+            <Camera className="h-5 w-5" aria-hidden="true" />
           )}
         </button>
         <input
@@ -90,10 +91,10 @@ export default function CharacterCardEdit({ card }: { card: CharacterCard }) {
               value={card.leftPercent}
               onChange={(e) => setLeftPercent(e.target.value)}
               inputMode="numeric"
-              className="w-8 border-b border-zinc-300 text-center font-bold text-zinc-900 outline-none focus:border-primary"
+              className="w-8 border-b border-zinc-300 text-center font-bold text-zinc-500 outline-none focus:border-primary"
             />
             % | 른{" "}
-            <span className="font-bold text-zinc-900">{rightPercent(card)}%</span>
+            <span className="font-bold text-zinc-500">{rightPercent(card)}%</span>
           </p>
         </div>
       </div>

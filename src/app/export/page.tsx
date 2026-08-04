@@ -24,8 +24,8 @@ export default function ExportPage() {
 
   return (
     <div className="screen-pad flex flex-1 flex-col">
-      <h1 className="font-title text-2xl">취향표 저장과 공유</h1>
-      <p className="mt-2 text-sm text-zinc-500">사진을 눌러 확인해 보세요!</p>
+      <h1 className="font-title text-[30px]">취향표 저장과 공유</h1>
+      <p className="mt-2 text-sm text-zinc-500">사진을 눌러 확인해보세요!</p>
 
       {/* 캡처 대상 영역 */}
       <div className="mt-4">

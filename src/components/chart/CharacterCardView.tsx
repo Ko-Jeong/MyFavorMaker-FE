@@ -24,9 +24,9 @@ export default function CharacterCardView({ card }: { card: CharacterCard }) {
           <p className="font-bold text-zinc-900">{card.name}</p>
           {/* 왼/른 퍼센트 텍스트 */}
           <p className="text-sm text-zinc-500">
-            왼 <span className="font-bold text-zinc-900">{card.leftPercent}%</span>{" "}
+            왼 <span className="font-bold text-zinc-500">{card.leftPercent}%</span>{" "}
             | 른{" "}
-            <span className="font-bold text-zinc-900">{rightPercent(card)}%</span>
+            <span className="font-bold text-zinc-500">{rightPercent(card)}%</span>
           </p>
         </div>
       </div>

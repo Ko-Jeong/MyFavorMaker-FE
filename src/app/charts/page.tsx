@@ -40,7 +40,7 @@ export default function ChartsPage() {
           + new
         </button>
       </div>
-      <p className="mt-2 shrink-0 text-[16px] font-semibold leading-[22px] text-[#363636]">
+      <p className="mt-2 text-sm text-zinc-500">
         미리 등록된 취향표를 불러오거나
         <br />새 취향표를 만들 수 있어요
       </p>
