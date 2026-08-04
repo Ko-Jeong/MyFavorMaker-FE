@@ -1,6 +1,12 @@
 "use client";
 
-import { useRef, type ChangeEvent } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ChangeEvent,
+  type KeyboardEvent,
+} from "react";
 import { Camera, X } from "lucide-react";
 import { type CharacterCard, rightPercent } from "@/types/chart";
 import { useChartStore } from "@/store/useChartStore";
@@ -16,6 +22,12 @@ import MemberPhoto from "@/components/chart/MemberPhoto";
 export default function CharacterCardEdit({ card }: { card: CharacterCard }) {
   const { updateCard, removeCard } = useChartStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const nameInputRef = useRef<HTMLInputElement>(null);
+  const commentTextareaRef = useRef<HTMLTextAreaElement>(null);
+  const nameMeasureRef = useRef<HTMLSpanElement>(null);
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [isEditingComment, setIsEditingComment] = useState(false);
+  const [nameWidth, setNameWidth] = useState<number>(0);
 
   const setLeftPercent = (raw: string) => {
     const n = Number(raw.replace(/[^0-9]/g, ""));
@@ -41,6 +53,39 @@ export default function CharacterCardEdit({ card }: { card: CharacterCard }) {
     currentTarget.style.height = `${currentTarget.scrollHeight}px`;
     updateCard(card.id, { comment: currentTarget.value });
   };
+
+  const stopNameEditOnEnter = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      setIsEditingName(false);
+      event.currentTarget.blur();
+    }
+  };
+
+  useEffect(() => {
+    if (!isEditingName || !nameInputRef.current) return;
+
+    const { current } = nameInputRef;
+    current.focus();
+    const end = current.value.length;
+    current.setSelectionRange(end, end);
+  }, [isEditingName]);
+
+  useEffect(() => {
+    if (!isEditingComment || !commentTextareaRef.current) return;
+
+    const { current } = commentTextareaRef;
+    current.focus();
+    current.style.height = "0px";
+    current.style.height = `${current.scrollHeight}px`;
+    const end = current.value.length;
+    current.setSelectionRange(end, end);
+  }, [isEditingComment]);
+
+  useEffect(() => {
+    if (!nameMeasureRef.current) return;
+    setNameWidth(nameMeasureRef.current.offsetWidth);
+  }, [card.name]);
 
   return (
     <Card className="relative">
@@ -85,12 +130,42 @@ export default function CharacterCardEdit({ card }: { card: CharacterCard }) {
 
         <div className="flex-1">
           {/* 이름 */}
-          <input
-            value={card.name}
-            onChange={(e) => updateCard(card.id, { name: e.target.value })}
-            className="w-full font-semibold text-zinc-900 outline-none"
-            placeholder="name"
-          />
+          <div className="flex items-center gap-1.5">
+            <div className="min-w-0" style={{ width: nameWidth ? `${nameWidth + 2}px` : undefined }}>
+              <span
+                ref={nameMeasureRef}
+                className="pointer-events-none absolute -z-10 whitespace-pre font-semibold opacity-0"
+              >
+                {card.name}
+              </span>
+              {isEditingName ? (
+                <input
+                  ref={nameInputRef}
+                  value={card.name}
+                  onChange={(e) => updateCard(card.id, { name: e.target.value })}
+                  onBlur={() => setIsEditingName(false)}
+                  onKeyDown={stopNameEditOnEnter}
+                  className="w-full min-w-0 font-semibold text-zinc-900 outline-none"
+                  style={{ width: `${Math.max(nameWidth + 2, 12)}px` }}
+                />
+              ) : (
+                <p className="truncate font-semibold text-zinc-900">{card.name}</p>
+              )}
+            </div>
+            <button
+              type="button"
+              onClick={() => setIsEditingName(true)}
+              className="shrink-0"
+              aria-label="이름 수정"
+            >
+              <img
+                src="/icons/pencil.svg"
+                alt=""
+                aria-hidden="true"
+                className="h-[14px] w-[14px]"
+              />
+            </button>
+          </div>
           {/* 왼/른 퍼센트 텍스트 — 왼 값을 숫자로 입력하면 바가 자동 반영 */}
           <p className="flex items-center gap-1 text-sm text-zinc-500">
             왼
@@ -112,13 +187,38 @@ export default function CharacterCardEdit({ card }: { card: CharacterCard }) {
       </div>
 
       {/* 코멘트 */}
-      <textarea
-        value={card.comment ?? ""}
-        onChange={setComment}
-        rows={1}
-        className="mt-3 w-full resize-none overflow-hidden rounded-md border border-zinc-200 px-2 py-1 text-sm outline-none focus:border-primary"
-        placeholder="+ 코멘트 추가"
-      />
+      <div className="mt-3 flex items-start gap-1.5">
+        {isEditingComment ? (
+          <textarea
+            ref={commentTextareaRef}
+            value={card.comment ?? ""}
+            onChange={setComment}
+            onBlur={() => setIsEditingComment(false)}
+            rows={1}
+            className="w-full resize-none overflow-hidden rounded-md border border-zinc-200 px-2 py-1 text-sm outline-none focus:border-primary"
+            placeholder="+ 코멘트 추가"
+          />
+        ) : (
+          <div className="flex w-full items-center justify-between rounded-md border border-zinc-200 px-2 py-1 text-sm text-zinc-400">
+            <span className={card.comment?.trim() ? "text-zinc-600" : ""}>
+              {card.comment?.trim() ? card.comment : "+ 코멘트 추가"}
+            </span>
+            <button
+              type="button"
+              onClick={() => setIsEditingComment(true)}
+              className="shrink-0"
+              aria-label="코멘트 수정"
+            >
+              <img
+                src="/icons/pencil.svg"
+                alt=""
+                aria-hidden="true"
+                className="h-[14px] w-[14px]"
+              />
+            </button>
+          </div>
+        )}
+      </div>
     </Card>
   );
 }

@@ -1,6 +1,15 @@
 "use client";
 
-import { useMemo, useState, type MouseEvent, type ReactNode, type TouchEvent } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type KeyboardEvent,
+  type MouseEvent,
+  type ReactNode,
+  type TouchEvent,
+} from "react";
 import Link from "next/link";
 import {
   DndContext,
@@ -81,6 +90,10 @@ function SortableCard({
 export default function EditorPage() {
   const { chart, setTitle, addCard, loadChart } = useChartStore();
   const [activeCardId, setActiveCardId] = useState<string | null>(null);
+  const [isEditingTitle, setIsEditingTitle] = useState(false);
+  const titleInputRef = useRef<HTMLInputElement>(null);
+  const titleMeasureRef = useRef<HTMLSpanElement>(null);
+  const [titleWidth, setTitleWidth] = useState<number>(0);
   const sensors = useSensors(
     useSensor(CustomMouseSensor, {
       activationConstraint: { distance: 8 },
@@ -116,14 +129,67 @@ export default function EditorPage() {
     });
   };
 
+  const stopTitleEditOnEnter = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      setIsEditingTitle(false);
+      event.currentTarget.blur();
+    }
+  };
+
+  useEffect(() => {
+    if (!isEditingTitle || !titleInputRef.current) return;
+
+    const { current } = titleInputRef;
+    current.focus();
+    const end = current.value.length;
+    current.setSelectionRange(end, end);
+  }, [isEditingTitle]);
+
+  useEffect(() => {
+    if (!titleMeasureRef.current) return;
+    setTitleWidth(titleMeasureRef.current.offsetWidth);
+  }, [chart.title]);
+
   return (
     <div className="screen-pad flex flex-1 flex-col">
       <div className="relative pr-[84px]">
-        <input
-          value={chart.title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="min-w-0 w-full font-title text-[30px] outline-none"
-        />
+        <div className="flex items-center gap-1.5">
+          <div className="min-w-0" style={{ width: titleWidth ? `${titleWidth + 2}px` : undefined }}>
+            <span
+              ref={titleMeasureRef}
+              className="pointer-events-none absolute -z-10 whitespace-pre font-title text-[30px] opacity-0"
+            >
+              {chart.title}
+            </span>
+            {isEditingTitle ? (
+              <input
+                ref={titleInputRef}
+                value={chart.title}
+                onChange={(e) => setTitle(e.target.value)}
+                onBlur={() => setIsEditingTitle(false)}
+                onKeyDown={stopTitleEditOnEnter}
+                className="w-full min-w-0 font-title text-[30px] outline-none"
+                style={{ width: `${Math.max(titleWidth + 2, 12)}px` }}
+              />
+            ) : (
+              <h1 className="truncate font-title text-[30px]">{chart.title}</h1>
+            )}
+          </div>
+          <button
+            type="button"
+            onClick={() => setIsEditingTitle(true)}
+            className="shrink-0"
+            aria-label="제목 수정"
+          >
+            <img
+              src="/icons/pencil.svg"
+              alt=""
+              aria-hidden="true"
+              className="h-[14px] w-[14px]"
+            />
+          </button>
+        </div>
         <div className="absolute right-0 top-1/2 flex -translate-y-1/2 justify-end">
           <Link href="/preview">
             <Button className="w-[72px]">Done!</Button>
