@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, type ChangeEvent } from "react";
 import { Camera } from "lucide-react";
 import { type CharacterCard, rightPercent } from "@/types/chart";
 import { useChartStore } from "@/store/useChartStore";
@@ -33,6 +33,13 @@ export default function CharacterCardEdit({ card }: { card: CharacterCard }) {
       }
     };
     reader.readAsDataURL(file);
+  };
+
+  const setComment = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    const { currentTarget } = event;
+    currentTarget.style.height = "0px";
+    currentTarget.style.height = `${currentTarget.scrollHeight}px`;
+    updateCard(card.id, { comment: currentTarget.value });
   };
 
   return (
@@ -105,10 +112,11 @@ export default function CharacterCardEdit({ card }: { card: CharacterCard }) {
       </div>
 
       {/* 코멘트 */}
-      <input
+      <textarea
         value={card.comment ?? ""}
-        onChange={(e) => updateCard(card.id, { comment: e.target.value })}
-        className="mt-3 w-full rounded-md border border-zinc-200 px-2 py-1 text-sm outline-none focus:border-primary"
+        onChange={setComment}
+        rows={1}
+        className="mt-3 w-full resize-none overflow-hidden rounded-md border border-zinc-200 px-2 py-1 text-sm outline-none focus:border-primary"
         placeholder="+ 코멘트 추가"
       />
     </Card>
