@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { chartList, getGroup } from "@/data/charts";
 import { groupToChart } from "@/types/chart";
 import { useChartStore } from "@/store/useChartStore";
+import Button from "@/components/ui/Button";
 
 /**
  * 그룹 불러오기 + 선택
@@ -29,18 +30,17 @@ export default function ChartsPage() {
   };
 
   return (
-    <div className="screen-pad flex h-dvh flex-col">
+    <div className="screen-pad select-none flex h-dvh flex-col">
       {/* 헤더 (고정) */}
-      <div className="flex shrink-0 items-start justify-between">
+      <div className="relative shrink-0 pr-[84px]">
         <h1 className="font-title text-[30px]">불러오기</h1>
-        <button
-          onClick={createNew}
-          className="rounded-[12px] bg-primary px-[14px] py-[2px] text-[18px] font-light text-white"
-        >
-          + new
-        </button>
+        <div className="absolute right-0 top-1/2 flex -translate-y-1/2 justify-end">
+          <Button onClick={createNew} className="w-[72px]">
+            + New
+          </Button>
+        </div>
       </div>
-      <p className="mt-2 shrink-0 text-[16px] font-semibold leading-[22px] text-[#363636]">
+      <p className="mt-2 text-sm text-zinc-500">
         미리 등록된 취향표를 불러오거나
         <br />새 취향표를 만들 수 있어요
       </p>

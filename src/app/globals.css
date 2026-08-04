@@ -38,6 +38,10 @@ body {
   height: 100%;
 }
 
+html {
+  scrollbar-gutter: stable;
+}
+
 body {
   background: var(--frame-outside);
   color: var(--foreground);

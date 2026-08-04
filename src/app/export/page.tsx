@@ -23,9 +23,9 @@ export default function ExportPage() {
   };
 
   return (
-    <div className="screen-pad flex flex-1 flex-col">
-      <h1 className="font-title text-2xl">취향표 저장과 공유</h1>
-      <p className="mt-2 text-sm text-zinc-500">사진을 눌러 확인해 보세요!</p>
+    <div className="screen-pad select-none flex flex-1 flex-col">
+      <h1 className="font-title text-[30px]">취향표 저장과 공유</h1>
+      <p className="mt-2 text-sm text-zinc-500">사진을 눌러 확인해보세요!</p>
 
       {/* 캡처 대상 영역 */}
       <div className="mt-4">
@@ -61,10 +61,17 @@ export default function ExportPage() {
         </button>
       </div>
 
-      <div className="mt-6 text-sm">
-        <Link href="/preview" className="text-zinc-600">
-          ◀ 이전
+      <div className="mt-auto flex items-center justify-between pb-[calc(env(safe-area-inset-bottom)+12px)] pt-6 text-sm font-medium">
+        <Link href="/preview" className="inline-flex items-center gap-1.5 text-[16px] text-zinc-500">
+          <img
+            src="/icons/nav-left.svg"
+            alt=""
+            aria-hidden="true"
+            className="h-4.3 w-4.3"
+          />
+          이전
         </Link>
+        <span aria-hidden="true" className="w-[72px]" />
       </div>
     </div>
   );
