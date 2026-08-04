@@ -22,10 +22,7 @@ function Waveform() {
  */
 export default function LandingPage() {
   return (
-    <Link
-      href="/charts"
-      className="screen-pad flex flex-1 flex-col justify-center"
-    >
+    <div className="screen-pad flex flex-1 flex-col justify-center">
       <div className="flex flex-col gap-3">
         <div className="max-w-[78%] self-start rounded-3xl bg-[#E6E5EB] px-5 py-2 text-[17px]">
           너 왜 눈을 CP렇게 떠?
@@ -47,9 +44,11 @@ export default function LandingPage() {
           <div className="rounded-[50px] bg-[#E6E5EB]/30 px-6 py-1 font-title text-[20px] text-[#414141]">
             CREATE YOURS
           </div>
-          <span className="font-title text-[17px] text-primary">click!</span>
+          <Link href="/charts" className="font-title text-[17px] text-primary">
+            click!
+          </Link>
         </div>
       </div>
-    </Link>
+    </div>
   );
 }
