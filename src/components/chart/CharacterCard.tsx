@@ -217,7 +217,7 @@ export default function CharacterCardEdit({ card }: { card: CharacterCard }) {
             onBlur={() => setIsEditingComment(false)}
             rows={1}
             className="w-full resize-none overflow-hidden bg-transparent text-sm text-zinc-600 outline-none"
-            placeholder="+ comment"
+            placeholder="comment"
           />
         ) : (
           <div className="inline-flex items-end gap-1.5 text-sm text-zinc-400">
@@ -228,7 +228,7 @@ export default function CharacterCardEdit({ card }: { card: CharacterCard }) {
                   : "whitespace-pre-wrap"
               }
             >
-              {trimmedComment || "+ comment"}
+              {trimmedComment || "comment"}
             </span>
             <button
               type="button"
