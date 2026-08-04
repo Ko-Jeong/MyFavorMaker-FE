@@ -95,7 +95,7 @@ export default function EditorPage() {
   const titleMeasureRef = useRef<HTMLSpanElement>(null);
   const [titleWidth, setTitleWidth] = useState<number>(0);
   const trimmedTitle = chart.title.trim();
-  const displayTitle = trimmedTitle || "Title";
+  const displayTitle = trimmedTitle || "나의 취향표";
   const sensors = useSensors(
     useSensor(CustomMouseSensor, {
       activationConstraint: { distance: 8 },
@@ -173,7 +173,7 @@ export default function EditorPage() {
                 onKeyDown={stopTitleEditOnEnter}
                 className="w-full min-w-0 font-title text-[30px] text-zinc-900 placeholder:text-zinc-400 outline-none"
                 style={{ width: `${Math.max(titleWidth + 2, 12)}px` }}
-                placeholder="Title"
+                placeholder="나의 취향표"
               />
             ) : (
               <h1
