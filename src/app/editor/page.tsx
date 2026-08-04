@@ -118,15 +118,17 @@ export default function EditorPage() {
 
   return (
     <div className="screen-pad flex flex-1 flex-col">
-      <div className="flex items-center justify-between gap-2">
+      <div className="relative pr-[84px]">
         <input
           value={chart.title}
           onChange={(e) => setTitle(e.target.value)}
-          className="min-w-0 flex-1 font-title text-[30px] outline-none"
+          className="min-w-0 w-full font-title text-[30px] outline-none"
         />
-        <Link href="/preview">
-          <Button>Done!</Button>
-        </Link>
+        <div className="absolute right-0 top-1/2 flex -translate-y-1/2 justify-end">
+          <Link href="/preview">
+            <Button className="w-[72px]">Done!</Button>
+          </Link>
+        </div>
       </div>
 
       <DndContext
