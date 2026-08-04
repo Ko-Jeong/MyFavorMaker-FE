@@ -1,43 +1,72 @@
 import Link from "next/link";
 import { Play } from "lucide-react";
 
-/* 음성 메시지 파형 */
-const WAVE_BARS = [6, 11, 16, 9, 14, 19, 12, 17, 8, 4];
-function Waveform() {
+function Bubble({
+  src,
+  alt,
+  className = "",
+  children,
+}: {
+  src: string;
+  alt: string;
+  className?: string;
+  children: React.ReactNode;
+}) {
   return (
-    <div className="flex items-center gap-[4px]">
-      {WAVE_BARS.map((h, i) => (
-        <span
-          key={i}
-          className="w-[2px] rounded-full bg-white opacity-66"
-          style={{ height: h }}
-        />
-      ))}
+    <div className={`relative ${className}`}>
+      <img src={src} alt={alt} className="h-full w-full" />
+      <div className="absolute inset-0">{children}</div>
     </div>
   );
 }
 
-/**
- * 랜딩 페이지
- */
 export default function LandingPage() {
   return (
     <div className="screen-pad flex flex-1 flex-col justify-center">
-      <div className="flex flex-col gap-3">
-        <div className="max-w-[78%] self-start rounded-3xl bg-[#E6E5EB] px-5 py-2 text-[17px]">
-          너 왜 눈을 CP렇게 떠?
-        </div>
-        <div className="max-w-[78%] self-end rounded-4xl bg-primary px-5 py-2 text-[17px] text-white">
-          설명해줄게
-        </div>
-        <div className="flex max-w-[78%] items-center gap-3 self-end rounded-4xl bg-primary px-4 py-3 text-[17px] text-white">
-          {/* 재생 버튼 아이콘 */}
-          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white">
-            <Play className="h-4 w-4 fill-primary text-primary" />
-          </span>
-          {/* 음성 파형 */}
-          <Waveform />
-          <span className="text-sm opacity-66">01:54:45</span>
+      <div className="flex flex-col gap-5">
+        <Bubble
+          src="/landing/left-bubble.svg"
+          alt=""
+          className="h-[36px] w-[195px] self-start"
+        >
+          <div className="flex h-full w-full items-center justify-center whitespace-nowrap px-3 text-center text-[16px] text-black">
+            <span className="translate-x-1">너 왜 눈을 CP렇게 떠?</span>
+          </div>
+        </Bubble>
+
+        <div className="flex flex-col items-end gap-2">
+          <Bubble
+            src="/landing/right-bubble-1.svg"
+            alt=""
+            className="h-[36px] w-[114px]"
+          >
+            <div className="flex h-full w-full items-center justify-center whitespace-nowrap px-3 text-center text-[16px] text-white">
+              <span className="-translate-x-0.5">설명해줄게</span>
+            </div>
+          </Bubble>
+
+          <Bubble
+            src="/landing/right-bubble-2.svg"
+            alt=""
+            className="h-[54px] w-[224px]"
+          >
+            <div className="flex h-full w-full items-center justify-center px-5 text-white">
+              <div className="-translate-x-2.5 flex items-center">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white">
+                  <Play className="h-4 w-4 fill-primary text-primary" />
+                </span>
+                <div className="ml-3 flex items-center gap-3">
+                  <img
+                    src="/landing/waveform.svg"
+                    alt=""
+                    aria-hidden="true"
+                    className="h-8 w-[86px]"
+                  />
+                  <span className="text-[14px] opacity-66">01:54:45</span>
+                </div>
+              </div>
+            </div>
+          </Bubble>
         </div>
 
         <div className="mt-6 flex flex-col items-center gap-1">
