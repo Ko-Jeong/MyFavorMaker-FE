@@ -10,7 +10,6 @@ export const nct127: IdolGroup = {
     { name: "도영", photoUrl: "/photos/nct127/4.jpg" },
     { name: "재현", photoUrl: "/photos/nct127/5.jpg" },
     { name: "정우", photoUrl: "/photos/nct127/6.jpg" },
-    { name: "마크", photoUrl: "/photos/nct127/7.jpg" },
     { name: "해찬", photoUrl: "/photos/nct127/8.jpg" },
   ],
 };

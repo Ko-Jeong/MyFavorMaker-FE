@@ -19,6 +19,7 @@ interface ChartState {
   addCard: () => void;
   removeCard: (id: string) => void;
   updateCard: (id: string, patch: Partial<CharacterCard>) => void;
+  reorderCards: (fromIndex: number, toIndex: number) => void;
 }
 
 const emptyChart = (): Chart => ({
@@ -59,4 +60,28 @@ export const useChartStore = create<ChartState>((set) => ({
         ),
       },
     })),
+
+  reorderCards: (fromIndex, toIndex) =>
+    set((s) => {
+      const cards = [...s.chart.cards];
+      if (
+        fromIndex === toIndex ||
+        fromIndex < 0 ||
+        toIndex < 0 ||
+        fromIndex >= cards.length ||
+        toIndex >= cards.length
+      ) {
+        return s;
+      }
+
+      const [moved] = cards.splice(fromIndex, 1);
+      cards.splice(toIndex, 0, moved);
+
+      return {
+        chart: {
+          ...s.chart,
+          cards,
+        },
+      };
+    }),
 }));

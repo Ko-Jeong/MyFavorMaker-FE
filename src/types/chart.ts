@@ -38,7 +38,7 @@ export interface IdolGroup {
   members: GroupMember[];
 }
 
-/** 그룹 명단 → 편집용 취향표로 변환 (왼% = 0 에서 시작, 코멘트 없음) */
+/** 그룹 명단 → 편집용 취향표로 변환 (왼% = 50 에서 시작, 코멘트 없음) */
 export const groupToChart = (group: IdolGroup): Chart => ({
   id: group.id,
   title: group.title,
@@ -46,7 +46,7 @@ export const groupToChart = (group: IdolGroup): Chart => ({
     id: m.id ?? `${group.id}-${i}`, // id 없으면 자동 생성
     name: m.name,
     photoUrl: m.photoUrl,
-    leftPercent: 0,
+    leftPercent: 50,
     comment: "",
   })),
 });
@@ -62,10 +62,10 @@ export const uid = (): string =>
     ? crypto.randomUUID()
     : `id-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
 
-/** 빈 카드 하나 생성 (왼% = 0 에서 시작) */
+/** 빈 카드 하나 생성 (왼% = 50 에서 시작) */
 export const createEmptyCard = (): CharacterCard => ({
   id: uid(),
   name: "name",
-  leftPercent: 0,
+  leftPercent: 50,
   comment: "",
 });
