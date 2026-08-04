@@ -14,6 +14,22 @@ import PreferenceSlider from "@/components/ui/PreferenceSlider";
 import Card from "@/components/ui/Card";
 import MemberPhoto from "@/components/chart/MemberPhoto";
 
+const syncTextareaHeight = (element: HTMLTextAreaElement) => {
+  element.style.height = "0px";
+  element.style.height = `${element.scrollHeight}px`;
+};
+
+function PencilIcon() {
+  return (
+    <img
+      src="/icons/pencil.svg"
+      alt=""
+      aria-hidden="true"
+      className="h-[14px] w-[14px]"
+    />
+  );
+}
+
 /**
  * 편집용 카드 (editor 화면).
  * 이름 / 사진 업로드 / 왼 퍼센트(숫자 입력) / 코멘트 수정 + 삭제(×).
@@ -28,7 +44,9 @@ export default function CharacterCardEdit({ card }: { card: CharacterCard }) {
   const [isEditingName, setIsEditingName] = useState(false);
   const [isEditingComment, setIsEditingComment] = useState(false);
   const [nameWidth, setNameWidth] = useState<number>(0);
-  const displayName = card.name.trim() ? card.name : "name";
+  const trimmedName = card.name.trim();
+  const displayName = trimmedName || "name";
+  const trimmedComment = card.comment?.trim() ?? "";
 
   const setLeftPercent = (raw: string) => {
     const n = Number(raw.replace(/[^0-9]/g, ""));
@@ -50,8 +68,7 @@ export default function CharacterCardEdit({ card }: { card: CharacterCard }) {
 
   const setComment = (event: ChangeEvent<HTMLTextAreaElement>) => {
     const { currentTarget } = event;
-    currentTarget.style.height = "0px";
-    currentTarget.style.height = `${currentTarget.scrollHeight}px`;
+    syncTextareaHeight(currentTarget);
     updateCard(card.id, { comment: currentTarget.value });
   };
 
@@ -77,8 +94,7 @@ export default function CharacterCardEdit({ card }: { card: CharacterCard }) {
 
     const { current } = commentTextareaRef;
     current.focus();
-    current.style.height = "0px";
-    current.style.height = `${current.scrollHeight}px`;
+    syncTextareaHeight(current);
     const end = current.value.length;
     current.setSelectionRange(end, end);
   }, [isEditingComment]);
@@ -153,7 +169,7 @@ export default function CharacterCardEdit({ card }: { card: CharacterCard }) {
               ) : (
                 <p
                   className={
-                    card.name.trim()
+                    trimmedName
                       ? "truncate font-semibold text-zinc-900"
                       : "truncate font-semibold text-zinc-400"
                   }
@@ -168,12 +184,7 @@ export default function CharacterCardEdit({ card }: { card: CharacterCard }) {
               className="shrink-0"
               aria-label="이름 수정"
             >
-              <img
-                src="/icons/pencil.svg"
-                alt=""
-                aria-hidden="true"
-                className="h-[14px] w-[14px]"
-              />
+              <PencilIcon />
             </button>
           </div>
           {/* 왼/른 퍼센트 텍스트 — 왼 값을 숫자로 입력하면 바가 자동 반영 */}
@@ -212,12 +223,12 @@ export default function CharacterCardEdit({ card }: { card: CharacterCard }) {
           <div className="inline-flex items-end gap-1.5 text-sm text-zinc-400">
             <span
               className={
-                card.comment?.trim()
+                trimmedComment
                   ? "whitespace-pre-wrap text-zinc-600"
                   : "whitespace-pre-wrap"
               }
             >
-              {card.comment?.trim() ? card.comment : "+ comment"}
+              {trimmedComment || "+ comment"}
             </span>
             <button
               type="button"
@@ -225,12 +236,7 @@ export default function CharacterCardEdit({ card }: { card: CharacterCard }) {
               className="shrink-0"
               aria-label="코멘트 수정"
             >
-              <img
-                src="/icons/pencil.svg"
-                alt=""
-                aria-hidden="true"
-                className="h-[14px] w-[14px]"
-              />
+              <PencilIcon />
             </button>
           </div>
         )}
