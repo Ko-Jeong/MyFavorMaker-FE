@@ -271,16 +271,18 @@ export default function ExportPage() {
         >
           <div className="flex min-h-full items-center justify-center">
             <div className="flex w-fit max-w-full flex-col items-center gap-6">
-              <img
-                src={imageUrl}
-                alt="확대된 취향표 이미지"
-                onClick={(event) => event.stopPropagation()}
-                className="h-auto max-h-[calc(100vh-148px)] w-auto max-w-[min(960px,100%)] rounded-[24px] bg-white object-contain shadow-2xl transition-transform duration-200"
-                style={{
-                  transform: `scale(${previewScale})`,
-                  transformOrigin: "center center",
-                }}
-              />
+              <div className="flex max-h-[calc(100vh-220px)] max-w-full items-center justify-center overflow-hidden">
+                <img
+                  src={imageUrl}
+                  alt="확대된 취향표 이미지"
+                  onClick={(event) => event.stopPropagation()}
+                  className="h-auto max-h-[calc(100vh-220px)] w-auto max-w-[min(960px,100%)] rounded-[24px] bg-white object-contain shadow-2xl transition-transform duration-200"
+                  style={{
+                    transform: `scale(${previewScale})`,
+                    transformOrigin: "center center",
+                  }}
+                />
+              </div>
 
               <div
                 className="flex items-center overflow-hidden rounded-xl bg-black/70 text-white"
