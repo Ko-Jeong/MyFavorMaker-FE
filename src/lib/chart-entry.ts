@@ -37,14 +37,31 @@ export const getTemplateChartFromParams = (
   return groupToChart(group);
 };
 
+const TEMPLATE_RELOAD_KEY = "cp-maker-template-reload-pending";
+
 export const shouldRestoreTemplateOnReload = () => {
-  if (typeof window === "undefined" || typeof performance === "undefined") {
+  if (
+    typeof window === "undefined" ||
+    typeof performance === "undefined" ||
+    typeof sessionStorage === "undefined"
+  ) {
     return false;
   }
 
   const navigationEntry = performance.getEntriesByType("navigation")[0] as
     | PerformanceNavigationTiming
     | undefined;
+  const isReload = navigationEntry?.type === "reload";
 
-  return navigationEntry?.type === "reload";
+  if (isReload && !sessionStorage.getItem(TEMPLATE_RELOAD_KEY)) {
+    sessionStorage.setItem(TEMPLATE_RELOAD_KEY, "pending");
+  }
+
+  const shouldRestore = sessionStorage.getItem(TEMPLATE_RELOAD_KEY) === "pending";
+
+  if (shouldRestore) {
+    sessionStorage.setItem(TEMPLATE_RELOAD_KEY, "consumed");
+  }
+
+  return shouldRestore;
 };
