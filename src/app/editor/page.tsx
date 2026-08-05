@@ -11,6 +11,7 @@ import {
   type TouchEvent,
 } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import {
   DndContext,
   DragOverlay,
@@ -32,6 +33,12 @@ import { CSS } from "@dnd-kit/utilities";
 import { useChartStore } from "@/store/useChartStore";
 import CharacterCardEdit from "@/components/chart/CharacterCard";
 import Button from "@/components/ui/Button";
+import {
+  getChartEntryHref,
+  getChartEntrySource,
+  getTemplateChartFromParams,
+  shouldRestoreTemplateOnReload,
+} from "@/lib/chart-entry";
 
 const isInteractiveElement = (element: HTMLElement | null): boolean =>
   Boolean(element?.closest("input, button, textarea, label"));
@@ -89,6 +96,7 @@ function SortableCard({
  */
 export default function EditorPage() {
   const { chart, setTitle, addCard, loadChart } = useChartStore();
+  const searchParams = useSearchParams();
   const [activeCardId, setActiveCardId] = useState<string | null>(null);
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const titleInputRef = useRef<HTMLInputElement>(null);
@@ -104,11 +112,21 @@ export default function EditorPage() {
       activationConstraint: { delay: 250, tolerance: 8 },
     }),
   );
+  const source = getChartEntrySource(searchParams.get("source"));
+  const groupId = searchParams.get("group");
+  const previewHref = getChartEntryHref("/preview", source, groupId ?? undefined);
 
   const activeCard = useMemo(
     () => chart.cards.find((card) => card.id === activeCardId) ?? null,
     [activeCardId, chart.cards],
   );
+
+  useEffect(() => {
+    const templateChart = getTemplateChartFromParams(source, groupId);
+    if (templateChart && shouldRestoreTemplateOnReload()) {
+      loadChart(templateChart);
+    }
+  }, [groupId, loadChart, source]);
 
   const handleDragStart = (event: DragStartEvent) => {
     setActiveCardId(String(event.active.id));
@@ -202,7 +220,7 @@ export default function EditorPage() {
           </button>
         </div>
         <div className="absolute right-0 top-1/2 flex -translate-y-1/2 justify-end">
-          <Link href="/preview">
+          <Link href={previewHref}>
             <Button className="w-[72px]">Done!</Button>
           </Link>
         </div>

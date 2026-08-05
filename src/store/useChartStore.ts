@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
 import {
   type Chart,
   type CharacterCard,
@@ -28,60 +29,69 @@ const emptyChart = (): Chart => ({
   cards: [createEmptyCard()],
 });
 
-export const useChartStore = create<ChartState>((set) => ({
-  chart: emptyChart(),
+export const useChartStore = create<ChartState>()(
+  persist(
+    (set) => ({
+      chart: emptyChart(),
 
-  setTitle: (title) =>
-    set((s) => ({ chart: { ...s.chart, title } })),
+      setTitle: (title) =>
+        set((s) => ({ chart: { ...s.chart, title } })),
 
-  loadChart: (chart) => set({ chart }),
+      loadChart: (chart) => set({ chart }),
 
-  reset: () => set({ chart: emptyChart() }),
+      reset: () => set({ chart: emptyChart() }),
 
-  addCard: () =>
-    set((s) => ({
-      chart: { ...s.chart, cards: [...s.chart.cards, createEmptyCard()] },
-    })),
+      addCard: () =>
+        set((s) => ({
+          chart: { ...s.chart, cards: [...s.chart.cards, createEmptyCard()] },
+        })),
 
-  removeCard: (id) =>
-    set((s) => ({
-      chart: {
-        ...s.chart,
-        cards: s.chart.cards.filter((c) => c.id !== id),
-      },
-    })),
+      removeCard: (id) =>
+        set((s) => ({
+          chart: {
+            ...s.chart,
+            cards: s.chart.cards.filter((c) => c.id !== id),
+          },
+        })),
 
-  updateCard: (id, patch) =>
-    set((s) => ({
-      chart: {
-        ...s.chart,
-        cards: s.chart.cards.map((c) =>
-          c.id === id ? { ...c, ...patch } : c,
-        ),
-      },
-    })),
+      updateCard: (id, patch) =>
+        set((s) => ({
+          chart: {
+            ...s.chart,
+            cards: s.chart.cards.map((c) =>
+              c.id === id ? { ...c, ...patch } : c,
+            ),
+          },
+        })),
 
-  reorderCards: (fromIndex, toIndex) =>
-    set((s) => {
-      const cards = [...s.chart.cards];
-      if (
-        fromIndex === toIndex ||
-        fromIndex < 0 ||
-        toIndex < 0 ||
-        fromIndex >= cards.length ||
-        toIndex >= cards.length
-      ) {
-        return s;
-      }
+      reorderCards: (fromIndex, toIndex) =>
+        set((s) => {
+          const cards = [...s.chart.cards];
+          if (
+            fromIndex === toIndex ||
+            fromIndex < 0 ||
+            toIndex < 0 ||
+            fromIndex >= cards.length ||
+            toIndex >= cards.length
+          ) {
+            return s;
+          }
 
-      const [moved] = cards.splice(fromIndex, 1);
-      cards.splice(toIndex, 0, moved);
+          const [moved] = cards.splice(fromIndex, 1);
+          cards.splice(toIndex, 0, moved);
 
-      return {
-        chart: {
-          ...s.chart,
-          cards,
-        },
-      };
+          return {
+            chart: {
+              ...s.chart,
+              cards,
+            },
+          };
+        }),
     }),
-}));
+    {
+      name: "cp-maker-chart",
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({ chart: state.chart }),
+    },
+  ),
+);

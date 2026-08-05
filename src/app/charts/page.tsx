@@ -6,6 +6,7 @@ import { chartList, getGroup } from "@/data/charts";
 import { groupToChart } from "@/types/chart";
 import { useChartStore } from "@/store/useChartStore";
 import Button from "@/components/ui/Button";
+import { getChartEntryHref } from "@/lib/chart-entry";
 
 /**
  * 그룹 불러오기 + 선택
@@ -21,12 +22,12 @@ export default function ChartsPage() {
     setSelectedId(id);
     loadChart(groupToChart(group));
     // 색 전환이 보이도록 딜레이 주고 이동
-    setTimeout(() => router.push("/editor"), 280);
+    setTimeout(() => router.push(getChartEntryHref("/editor", "template", id)), 280);
   };
 
   const createNew = () => {
     reset();
-    router.push("/editor");
+    router.push(getChartEntryHref("/editor", "new"));
   };
 
   return (

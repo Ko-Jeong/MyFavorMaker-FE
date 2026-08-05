@@ -1,12 +1,19 @@
 "use client";
 
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { Download, Minus, Minimize2, Plus } from "lucide-react";
 import { toPng } from "html-to-image";
 import { useEffect, useRef, useState } from "react";
 import { useChartStore } from "@/store/useChartStore";
 import CharacterCardView from "@/components/chart/CharacterCardView";
 import { type CharacterCard } from "@/types/chart";
+import {
+  getChartEntryHref,
+  getChartEntrySource,
+  getTemplateChartFromParams,
+  shouldRestoreTemplateOnReload,
+} from "@/lib/chart-entry";
 
 const CAPTURE_WIDTH = 780;
 
@@ -126,7 +133,8 @@ function ExportCaptureContent() {
 }
 
 export default function ExportPage() {
-  const { chart } = useChartStore();
+  const { chart, loadChart } = useChartStore();
+  const searchParams = useSearchParams();
   const captureRef = useRef<HTMLDivElement>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(true);
@@ -143,6 +151,16 @@ export default function ExportPage() {
   });
   const [previewScale, setPreviewScale] = useState(1);
   const shareText = "cpmaker.vercel.app";
+  const source = getChartEntrySource(searchParams.get("source"));
+  const groupId = searchParams.get("group");
+  const previewHref = getChartEntryHref("/preview", source, groupId ?? undefined);
+
+  useEffect(() => {
+    const templateChart = getTemplateChartFromParams(source, groupId);
+    if (templateChart && shouldRestoreTemplateOnReload()) {
+      loadChart(templateChart);
+    }
+  }, [groupId, loadChart, source]);
 
   useEffect(() => {
     let cancelled = false;
@@ -285,7 +303,7 @@ export default function ExportPage() {
 
       <div className="mt-auto border-t border-dashed border-zinc-300 pb-[calc(env(safe-area-inset-bottom)+12px)] pt-6">
         <div className="flex items-center justify-between text-sm font-medium">
-          <Link href="/preview" className="inline-flex items-center gap-1.5 text-[16px] text-zinc-500">
+          <Link href={previewHref} className="inline-flex items-center gap-1.5 text-[16px] text-zinc-500">
             <img
               src="/icons/nav-left.svg"
               alt=""
