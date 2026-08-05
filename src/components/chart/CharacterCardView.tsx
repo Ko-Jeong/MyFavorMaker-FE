@@ -7,9 +7,23 @@ import MemberPhoto from "@/components/chart/MemberPhoto";
  * 읽기전용 카드 (미리보기 / 내보내기 화면).
  * 구성: 사진 · 이름 · 왼/른 퍼센트 텍스트 · 퍼센트바 · 코멘트
  */
-export default function CharacterCardView({ card }: { card: CharacterCard }) {
+export default function CharacterCardView({
+  card,
+  className = "",
+  shadow = true,
+}: {
+  card: CharacterCard;
+  className?: string;
+  shadow?: boolean;
+}) {
+  const right = rightPercent(card);
+  const isBalanced = card.leftPercent === right;
+  const leftClass = !isBalanced && card.leftPercent > right ? "font-bold" : "";
+  const rightClass = !isBalanced && right > card.leftPercent ? "font-bold" : "";
+  const comment = card.comment?.trim() ?? "";
+
   return (
-    <Card>
+    <Card className={className} shadow={shadow}>
       <div className="flex items-center gap-3">
         {/* 사진 */}
         <div className="h-11 w-11 shrink-0 overflow-hidden rounded-full bg-zinc-200">
@@ -24,9 +38,8 @@ export default function CharacterCardView({ card }: { card: CharacterCard }) {
           <p className="font-bold text-zinc-900">{card.name}</p>
           {/* 왼/른 퍼센트 텍스트 */}
           <p className="text-sm text-zinc-500">
-            왼 <span className="font-bold text-zinc-500">{card.leftPercent}%</span>{" "}
-            | 른{" "}
-            <span className="font-bold text-zinc-500">{rightPercent(card)}%</span>
+            왼 <span className={leftClass}>{card.leftPercent}%</span> | 른{" "}
+            <span className={rightClass}>{right}%</span>
           </p>
         </div>
       </div>
@@ -37,11 +50,13 @@ export default function CharacterCardView({ card }: { card: CharacterCard }) {
       </div>
 
       {/* 코멘트 */}
-      {card.comment && (
-        <p className="mt-3 whitespace-pre-wrap text-sm text-zinc-600">
-          {card.comment}
-        </p>
-      )}
+      <p
+        className={`mt-3 min-h-[20px] whitespace-pre-wrap text-sm text-zinc-600 ${
+          comment ? "" : "invisible"
+        }`}
+      >
+        {comment || "placeholder"}
+      </p>
     </Card>
   );
 }

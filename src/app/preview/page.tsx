@@ -15,7 +15,7 @@ export default function PreviewPage() {
   return (
     <div className="screen-pad select-none flex flex-1 flex-col">
       <h1 className="font-title text-[30px]">미리보기</h1>
-      <p className="mt-2 text-sm text-zinc-500">카드 내용과 순서를 확인해주세요</p>
+      <p className="mt-2 text-sm text-zinc-500">카드 내용과 순서를 확인해 주세요</p>
 
       <div className="mt-6 flex flex-col gap-4">
         {chart.cards.map((card) => (

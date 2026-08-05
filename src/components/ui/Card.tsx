@@ -4,13 +4,17 @@ import { type ReactNode } from "react";
 export default function Card({
   children,
   className = "",
+  shadow = true,
 }: {
   children: ReactNode;
   className?: string;
+  shadow?: boolean;
 }) {
   return (
     <div
-      className={`rounded-2xl border border-zinc-200 bg-white px-4 pt-4 pb-[14px] shadow-sm ${className}`}
+      className={`rounded-2xl border border-zinc-200 bg-white px-4 pt-4 pb-[14px] ${
+        shadow ? "shadow-sm" : ""
+      } ${className}`}
     >
       {children}
     </div>
