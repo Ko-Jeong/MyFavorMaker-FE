@@ -232,20 +232,20 @@ export default function ExportPage() {
             <span className="flex items-center gap-2" aria-hidden="true">
               <span
                 className="h-2.5 w-2.5 rounded-full bg-zinc-400"
-                style={{ animation: "loadingDotBounce 1.2s ease-in-out infinite" }}
+                style={{ animation: "loadingDotBounce 1.35s ease-in-out infinite" }}
               />
               <span
                 className="h-2.5 w-2.5 rounded-full bg-zinc-400"
                 style={{
-                  animation: "loadingDotBounce 1.2s ease-in-out infinite",
-                  animationDelay: "0.15s",
+                  animation: "loadingDotBounce 1.35s ease-in-out infinite",
+                  animationDelay: "0.16s",
                 }}
               />
               <span
                 className="h-2.5 w-2.5 rounded-full bg-zinc-400"
                 style={{
-                  animation: "loadingDotBounce 1.2s ease-in-out infinite",
-                  animationDelay: "0.3s",
+                  animation: "loadingDotBounce 1.35s ease-in-out infinite",
+                  animationDelay: "0.32s",
                 }}
               />
             </span>
