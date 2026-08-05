@@ -11,8 +11,6 @@ import { type CharacterCard } from "@/types/chart";
 import {
   getChartEntryHref,
   getChartEntrySource,
-  getTemplateChartFromParams,
-  shouldRestoreTemplateOnReload,
 } from "@/lib/chart-entry";
 
 const CAPTURE_WIDTH = 780;
@@ -133,7 +131,7 @@ function ExportCaptureContent() {
 }
 
 export default function ExportPage() {
-  const { chart, loadChart } = useChartStore();
+  const { chart } = useChartStore();
   const searchParams = useSearchParams();
   const captureRef = useRef<HTMLDivElement>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
@@ -154,13 +152,6 @@ export default function ExportPage() {
   const source = getChartEntrySource(searchParams.get("source"));
   const groupId = searchParams.get("group");
   const previewHref = getChartEntryHref("/preview", source, groupId ?? undefined);
-
-  useEffect(() => {
-    const templateChart = getTemplateChartFromParams(source, groupId);
-    if (templateChart && shouldRestoreTemplateOnReload()) {
-      loadChart(templateChart);
-    }
-  }, [groupId, loadChart, source]);
 
   useEffect(() => {
     let cancelled = false;

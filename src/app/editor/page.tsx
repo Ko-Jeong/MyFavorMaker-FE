@@ -11,7 +11,7 @@ import {
   type TouchEvent,
 } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import {
   DndContext,
   DragOverlay,
@@ -37,7 +37,7 @@ import {
   getChartEntryHref,
   getChartEntrySource,
   getTemplateChartFromParams,
-  shouldRestoreTemplateOnReload,
+  isBrowserReload,
 } from "@/lib/chart-entry";
 
 const isInteractiveElement = (element: HTMLElement | null): boolean =>
@@ -96,6 +96,7 @@ function SortableCard({
  */
 export default function EditorPage() {
   const { chart, setTitle, addCard, loadChart } = useChartStore();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const [activeCardId, setActiveCardId] = useState<string | null>(null);
   const [isEditingTitle, setIsEditingTitle] = useState(false);
@@ -128,10 +129,10 @@ export default function EditorPage() {
 
   useEffect(() => {
     const templateChart = getTemplateChartFromParams(source, groupId);
-    if (templateChart && shouldRestoreTemplateOnReload()) {
+    if (templateChart && isBrowserReload(pathname)) {
       loadChart(templateChart);
     }
-  }, [groupId, loadChart, source]);
+  }, [groupId, loadChart, pathname, source]);
 
   const handleDragStart = (event: DragStartEvent) => {
     setActiveCardId(String(event.active.id));

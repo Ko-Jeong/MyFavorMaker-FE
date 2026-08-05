@@ -37,31 +37,26 @@ export const getTemplateChartFromParams = (
   return groupToChart(group);
 };
 
-const TEMPLATE_RELOAD_KEY = "cp-maker-template-reload-pending";
-
-export const shouldRestoreTemplateOnReload = () => {
-  if (
-    typeof window === "undefined" ||
-    typeof performance === "undefined" ||
-    typeof sessionStorage === "undefined"
-  ) {
+export const isBrowserReload = (pathname?: string) => {
+  if (typeof window === "undefined" || typeof performance === "undefined") {
     return false;
   }
 
   const navigationEntry = performance.getEntriesByType("navigation")[0] as
     | PerformanceNavigationTiming
     | undefined;
-  const isReload = navigationEntry?.type === "reload";
 
-  if (isReload && !sessionStorage.getItem(TEMPLATE_RELOAD_KEY)) {
-    sessionStorage.setItem(TEMPLATE_RELOAD_KEY, "pending");
+  if (navigationEntry?.type !== "reload") {
+    return false;
   }
 
-  const shouldRestore = sessionStorage.getItem(TEMPLATE_RELOAD_KEY) === "pending";
-
-  if (shouldRestore) {
-    sessionStorage.setItem(TEMPLATE_RELOAD_KEY, "consumed");
+  if (!pathname) {
+    return true;
   }
 
-  return shouldRestore;
+  const entryUrl = navigationEntry.name
+    ? new URL(navigationEntry.name)
+    : null;
+
+  return entryUrl?.pathname === pathname;
 };

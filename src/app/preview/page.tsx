@@ -1,15 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { useChartStore } from "@/store/useChartStore";
 import CharacterCardView from "@/components/chart/CharacterCardView";
 import {
   getChartEntryHref,
   getChartEntrySource,
-  getTemplateChartFromParams,
-  shouldRestoreTemplateOnReload,
 } from "@/lib/chart-entry";
 
 /**
@@ -18,19 +15,12 @@ import {
  * 이전 → /editor, 다음 → /export
  */
 export default function PreviewPage() {
-  const { chart, loadChart } = useChartStore();
+  const { chart } = useChartStore();
   const searchParams = useSearchParams();
   const source = getChartEntrySource(searchParams.get("source"));
   const groupId = searchParams.get("group");
   const editorHref = getChartEntryHref("/editor", source, groupId ?? undefined);
   const exportHref = getChartEntryHref("/export", source, groupId ?? undefined);
-
-  useEffect(() => {
-    const templateChart = getTemplateChartFromParams(source, groupId);
-    if (templateChart && shouldRestoreTemplateOnReload()) {
-      loadChart(templateChart);
-    }
-  }, [groupId, loadChart, source]);
 
   return (
     <div className="screen-pad select-none flex flex-1 flex-col">
