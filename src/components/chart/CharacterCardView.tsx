@@ -1,7 +1,8 @@
 import { type CharacterCard, rightPercent } from "@/types/chart";
-import PreferenceSlider from "@/components/ui/PreferenceSlider";
+import RatioSlider from "@/components/ui/RatioSlider";
 import Card from "@/components/ui/Card";
 import MemberPhoto from "@/components/chart/MemberPhoto";
+import RatioSummary from "@/components/chart/RatioSummary";
 
 /**
  * 읽기전용 카드 (미리보기 / 내보내기 화면).
@@ -34,16 +35,16 @@ export default function CharacterCardView({
           {/* 이름 */}
           <p className="font-bold text-zinc-900">{card.name}</p>
           {/* 왼/른 퍼센트 텍스트 */}
-          <p className="text-sm text-zinc-500">
-            왼 <span className="font-bold text-zinc-500">{card.leftPercent}%</span> | 른{" "}
-            <span className="font-bold text-zinc-500">{right}%</span>
-          </p>
+          <RatioSummary
+            leftPercent={card.leftPercent}
+            rightPercent={right}
+          />
         </div>
       </div>
 
       {/* 퍼센트바 */}
       <div className="mt-3">
-        <PreferenceSlider leftPercent={card.leftPercent} />
+        <RatioSlider leftPercent={card.leftPercent} />
       </div>
 
       {/* 코멘트 */}

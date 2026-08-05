@@ -10,9 +10,10 @@ import {
 import { Camera, X } from "lucide-react";
 import { type CharacterCard, rightPercent } from "@/types/chart";
 import { useChartStore } from "@/store/useChartStore";
-import PreferenceSlider from "@/components/ui/PreferenceSlider";
+import RatioSlider from "@/components/ui/RatioSlider";
 import Card from "@/components/ui/Card";
 import MemberPhoto from "@/components/chart/MemberPhoto";
+import RatioSummary from "@/components/chart/RatioSummary";
 
 const syncTextareaHeight = (element: HTMLTextAreaElement) => {
   element.style.height = "0px";
@@ -189,22 +190,18 @@ export default function CharacterCardEdit({ card }: { card: CharacterCard }) {
             </button>
           </div>
           {/* 왼/른 퍼센트 텍스트 — 왼 값을 숫자로 입력하면 바가 자동 반영 */}
-          <p className="flex items-center gap-1 text-sm text-zinc-500">
-            <span>왼</span>
-            <input
-              value={card.leftPercent}
-              onChange={(e) => setLeftPercent(e.target.value)}
-              inputMode="numeric"
-              className="w-8 border-b border-zinc-300 text-center font-bold text-zinc-500 outline-none focus:border-primary"
-            />
-            % | <span>른</span> <span className="font-bold text-zinc-500">{right}%</span>
-          </p>
+          <RatioSummary
+            leftPercent={card.leftPercent}
+            rightPercent={right}
+            editable
+            onLeftPercentChange={setLeftPercent}
+          />
         </div>
       </div>
 
       {/* 퍼센트바 (읽기전용, 왼 퍼센트에 따라 자동 반영) */}
       <div className="mt-3">
-        <PreferenceSlider leftPercent={card.leftPercent} />
+        <RatioSlider leftPercent={card.leftPercent} />
       </div>
 
       {/* 코멘트 */}
