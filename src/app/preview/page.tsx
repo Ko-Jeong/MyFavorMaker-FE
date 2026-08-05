@@ -1,8 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useChartStore } from "@/store/useChartStore";
 import CharacterCardView from "@/components/chart/CharacterCardView";
+import {
+  getChartEntryHref,
+  getChartEntrySource,
+} from "@/lib/chart-entry";
 
 /**
  * [담당 B] 미리보기 (시안: "프리뷰")
@@ -11,6 +16,11 @@ import CharacterCardView from "@/components/chart/CharacterCardView";
  */
 export default function PreviewPage() {
   const { chart } = useChartStore();
+  const searchParams = useSearchParams();
+  const source = getChartEntrySource(searchParams.get("source"));
+  const groupId = searchParams.get("group");
+  const editorHref = getChartEntryHref("/editor", source, groupId ?? undefined);
+  const exportHref = getChartEntryHref("/export", source, groupId ?? undefined);
 
   return (
     <div className="screen-pad select-none flex flex-1 flex-col">
@@ -25,7 +35,7 @@ export default function PreviewPage() {
 
       {/* 이전 / 다음 */}
       <div className="mt-auto flex items-center justify-between pb-[calc(env(safe-area-inset-bottom)+12px)] pt-6 text-sm font-medium">
-        <Link href="/editor" className="inline-flex items-center gap-1.5 text-[16px] text-zinc-500">
+        <Link href={editorHref} className="inline-flex items-center gap-1.5 text-[16px] text-zinc-500">
           <img
             src="/icons/nav-left.svg"
             alt=""
@@ -34,7 +44,7 @@ export default function PreviewPage() {
           />
           이전
         </Link>
-        <Link href="/export" className="inline-flex items-center gap-1.5 text-[16px] text-zinc-500">
+        <Link href={exportHref} className="inline-flex items-center gap-1.5 text-[16px] text-zinc-500">
           다음
           <img
             src="/icons/nav-right.svg"

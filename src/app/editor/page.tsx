@@ -11,6 +11,7 @@ import {
   type TouchEvent,
 } from "react";
 import Link from "next/link";
+import { usePathname, useSearchParams } from "next/navigation";
 import {
   DndContext,
   DragOverlay,
@@ -32,6 +33,12 @@ import { CSS } from "@dnd-kit/utilities";
 import { useChartStore } from "@/store/useChartStore";
 import CharacterCardEdit from "@/components/chart/CharacterCard";
 import Button from "@/components/ui/Button";
+import {
+  getChartEntryHref,
+  getChartEntrySource,
+  getTemplateChartFromParams,
+  isBrowserReload,
+} from "@/lib/chart-entry";
 
 const isInteractiveElement = (element: HTMLElement | null): boolean =>
   Boolean(element?.closest("input, button, textarea, label"));
@@ -88,9 +95,12 @@ function SortableCard({
  * 제목 편집 + 카드들 편집 + 칸 추가 + Done!(→ /preview)
  */
 export default function EditorPage() {
-  const { chart, setTitle, addCard, loadChart } = useChartStore();
+  const { chart, setTitle, addCard, loadChart, reset } = useChartStore();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [activeCardId, setActiveCardId] = useState<string | null>(null);
   const [isEditingTitle, setIsEditingTitle] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const titleInputRef = useRef<HTMLInputElement>(null);
   const titleMeasureRef = useRef<HTMLSpanElement>(null);
   const [titleWidth, setTitleWidth] = useState<number>(0);
@@ -104,11 +114,34 @@ export default function EditorPage() {
       activationConstraint: { delay: 250, tolerance: 8 },
     }),
   );
+  const source = getChartEntrySource(searchParams.get("source"));
+  const groupId = searchParams.get("group");
+  const previewHref = getChartEntryHref("/preview", source, groupId ?? undefined);
 
   const activeCard = useMemo(
     () => chart.cards.find((card) => card.id === activeCardId) ?? null,
     [activeCardId, chart.cards],
   );
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isBrowserReload(pathname)) {
+      return;
+    }
+
+    if (source === "template") {
+      const templateChart = getTemplateChartFromParams(source, groupId);
+      if (templateChart) {
+        loadChart(templateChart);
+      }
+      return;
+    }
+
+    reset();
+  }, [groupId, loadChart, pathname, reset, source]);
 
   const handleDragStart = (event: DragStartEvent) => {
     setActiveCardId(String(event.active.id));
@@ -202,47 +235,62 @@ export default function EditorPage() {
           </button>
         </div>
         <div className="absolute right-0 top-1/2 flex -translate-y-1/2 justify-end">
-          <Link href="/preview">
+          <Link href={previewHref}>
             <Button className="w-[72px]">Done!</Button>
           </Link>
         </div>
       </div>
 
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCenter}
-        onDragStart={handleDragStart}
-        onDragEnd={handleDragEnd}
-        onDragCancel={() => setActiveCardId(null)}
-      >
-        <SortableContext
-          items={chart.cards.map((card) => card.id)}
-          strategy={verticalListSortingStrategy}
+      {isMounted ? (
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+          onDragCancel={() => setActiveCardId(null)}
         >
-          <div className="mt-6 flex flex-col gap-3">
-            {chart.cards.map((card) => (
-              <SortableCard key={card.id} id={card.id}>
-                <CharacterCardEdit card={card} />
-              </SortableCard>
-            ))}
+          <SortableContext
+            items={chart.cards.map((card) => card.id)}
+            strategy={verticalListSortingStrategy}
+          >
+            <div className="mt-6 flex flex-col gap-3">
+              {chart.cards.map((card) => (
+                <SortableCard key={card.id} id={card.id}>
+                  <CharacterCardEdit card={card} />
+                </SortableCard>
+              ))}
 
-            <button
-              onClick={addCard}
-              className="rounded-2xl border border-dashed border-zinc-300 py-3 text-sm text-zinc-500 hover:bg-zinc-50"
-            >
-              + 칸 추가
-            </button>
-          </div>
-        </SortableContext>
-
-        <DragOverlay>
-          {activeCard ? (
-            <div className="scale-[1.01] rounded-2xl bg-zinc-100/35 shadow-lg ring-1 ring-zinc-200">
-              <CharacterCardEdit card={activeCard} />
+              <button
+                onClick={addCard}
+                className="rounded-2xl border border-dashed border-zinc-300 py-3 text-sm text-zinc-500 hover:bg-zinc-50"
+              >
+                + 칸 추가
+              </button>
             </div>
-          ) : null}
-        </DragOverlay>
-      </DndContext>
+          </SortableContext>
+
+          <DragOverlay>
+            {activeCard ? (
+              <div className="scale-[1.01] rounded-2xl bg-zinc-100/35 shadow-lg ring-1 ring-zinc-200">
+                <CharacterCardEdit card={activeCard} />
+              </div>
+            ) : null}
+          </DragOverlay>
+        </DndContext>
+      ) : (
+        <div className="mt-6 flex flex-col gap-3">
+          {chart.cards.map((card) => (
+            <CharacterCardEdit key={card.id} card={card} />
+          ))}
+
+          <button
+            onClick={addCard}
+            className="rounded-2xl border border-dashed border-zinc-300 py-3 text-sm text-zinc-500 hover:bg-zinc-50"
+          >
+            + 칸 추가
+          </button>
+        </div>
+      )}
     </div>
   );
 }
