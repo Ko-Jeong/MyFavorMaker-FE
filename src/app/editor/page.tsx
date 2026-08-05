@@ -95,7 +95,7 @@ function SortableCard({
  * 제목 편집 + 카드들 편집 + 칸 추가 + Done!(→ /preview)
  */
 export default function EditorPage() {
-  const { chart, setTitle, addCard, loadChart } = useChartStore();
+  const { chart, setTitle, addCard, loadChart, reset } = useChartStore();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [activeCardId, setActiveCardId] = useState<string | null>(null);
@@ -128,11 +128,20 @@ export default function EditorPage() {
   }, []);
 
   useEffect(() => {
-    const templateChart = getTemplateChartFromParams(source, groupId);
-    if (templateChart && isBrowserReload(pathname)) {
-      loadChart(templateChart);
+    if (!isBrowserReload(pathname)) {
+      return;
     }
-  }, [groupId, loadChart, pathname, source]);
+
+    if (source === "template") {
+      const templateChart = getTemplateChartFromParams(source, groupId);
+      if (templateChart) {
+        loadChart(templateChart);
+      }
+      return;
+    }
+
+    reset();
+  }, [groupId, loadChart, pathname, reset, source]);
 
   const handleDragStart = (event: DragStartEvent) => {
     setActiveCardId(String(event.active.id));
