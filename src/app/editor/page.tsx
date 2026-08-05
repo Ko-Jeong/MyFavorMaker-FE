@@ -99,6 +99,7 @@ export default function EditorPage() {
   const searchParams = useSearchParams();
   const [activeCardId, setActiveCardId] = useState<string | null>(null);
   const [isEditingTitle, setIsEditingTitle] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const titleInputRef = useRef<HTMLInputElement>(null);
   const titleMeasureRef = useRef<HTMLSpanElement>(null);
   const [titleWidth, setTitleWidth] = useState<number>(0);
@@ -120,6 +121,10 @@ export default function EditorPage() {
     () => chart.cards.find((card) => card.id === activeCardId) ?? null,
     [activeCardId, chart.cards],
   );
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     const templateChart = getTemplateChartFromParams(source, groupId);
@@ -226,41 +231,56 @@ export default function EditorPage() {
         </div>
       </div>
 
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCenter}
-        onDragStart={handleDragStart}
-        onDragEnd={handleDragEnd}
-        onDragCancel={() => setActiveCardId(null)}
-      >
-        <SortableContext
-          items={chart.cards.map((card) => card.id)}
-          strategy={verticalListSortingStrategy}
+      {isMounted ? (
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+          onDragCancel={() => setActiveCardId(null)}
         >
-          <div className="mt-6 flex flex-col gap-3">
-            {chart.cards.map((card) => (
-              <SortableCard key={card.id} id={card.id}>
-                <CharacterCardEdit card={card} />
-              </SortableCard>
-            ))}
+          <SortableContext
+            items={chart.cards.map((card) => card.id)}
+            strategy={verticalListSortingStrategy}
+          >
+            <div className="mt-6 flex flex-col gap-3">
+              {chart.cards.map((card) => (
+                <SortableCard key={card.id} id={card.id}>
+                  <CharacterCardEdit card={card} />
+                </SortableCard>
+              ))}
 
-            <button
-              onClick={addCard}
-              className="rounded-2xl border border-dashed border-zinc-300 py-3 text-sm text-zinc-500 hover:bg-zinc-50"
-            >
-              + 칸 추가
-            </button>
-          </div>
-        </SortableContext>
-
-        <DragOverlay>
-          {activeCard ? (
-            <div className="scale-[1.01] rounded-2xl bg-zinc-100/35 shadow-lg ring-1 ring-zinc-200">
-              <CharacterCardEdit card={activeCard} />
+              <button
+                onClick={addCard}
+                className="rounded-2xl border border-dashed border-zinc-300 py-3 text-sm text-zinc-500 hover:bg-zinc-50"
+              >
+                + 칸 추가
+              </button>
             </div>
-          ) : null}
-        </DragOverlay>
-      </DndContext>
+          </SortableContext>
+
+          <DragOverlay>
+            {activeCard ? (
+              <div className="scale-[1.01] rounded-2xl bg-zinc-100/35 shadow-lg ring-1 ring-zinc-200">
+                <CharacterCardEdit card={activeCard} />
+              </div>
+            ) : null}
+          </DragOverlay>
+        </DndContext>
+      ) : (
+        <div className="mt-6 flex flex-col gap-3">
+          {chart.cards.map((card) => (
+            <CharacterCardEdit key={card.id} card={card} />
+          ))}
+
+          <button
+            onClick={addCard}
+            className="rounded-2xl border border-dashed border-zinc-300 py-3 text-sm text-zinc-500 hover:bg-zinc-50"
+          >
+            + 칸 추가
+          </button>
+        </div>
+      )}
     </div>
   );
 }
