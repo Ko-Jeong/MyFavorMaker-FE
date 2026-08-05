@@ -17,9 +17,6 @@ export default function CharacterCardView({
   shadow?: boolean;
 }) {
   const right = rightPercent(card);
-  const isBalanced = card.leftPercent === right;
-  const leftClass = !isBalanced && card.leftPercent > right ? "font-bold" : "";
-  const rightClass = !isBalanced && right > card.leftPercent ? "font-bold" : "";
   const comment = card.comment?.trim() ?? "";
 
   return (
@@ -38,8 +35,8 @@ export default function CharacterCardView({
           <p className="font-bold text-zinc-900">{card.name}</p>
           {/* 왼/른 퍼센트 텍스트 */}
           <p className="text-sm text-zinc-500">
-            왼 <span className={leftClass}>{card.leftPercent}%</span> | 른{" "}
-            <span className={rightClass}>{right}%</span>
+            왼 <span className="font-bold text-zinc-500">{card.leftPercent}%</span> | 른{" "}
+            <span className="font-bold text-zinc-500">{right}%</span>
           </p>
         </div>
       </div>

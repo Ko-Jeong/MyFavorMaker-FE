@@ -44,6 +44,7 @@ export default function CharacterCardEdit({ card }: { card: CharacterCard }) {
   const [isEditingName, setIsEditingName] = useState(false);
   const [isEditingComment, setIsEditingComment] = useState(false);
   const [nameWidth, setNameWidth] = useState<number>(0);
+  const right = rightPercent(card);
   const trimmedName = card.name.trim();
   const displayName = trimmedName || "name";
   const trimmedComment = card.comment?.trim() ?? "";
@@ -189,15 +190,14 @@ export default function CharacterCardEdit({ card }: { card: CharacterCard }) {
           </div>
           {/* 왼/른 퍼센트 텍스트 — 왼 값을 숫자로 입력하면 바가 자동 반영 */}
           <p className="flex items-center gap-1 text-sm text-zinc-500">
-            왼
+            <span>왼</span>
             <input
               value={card.leftPercent}
               onChange={(e) => setLeftPercent(e.target.value)}
               inputMode="numeric"
               className="w-8 border-b border-zinc-300 text-center font-bold text-zinc-500 outline-none focus:border-primary"
             />
-            % | 른{" "}
-            <span className="font-bold text-zinc-500">{rightPercent(card)}%</span>
+            % | <span>른</span> <span className="font-bold text-zinc-500">{right}%</span>
           </p>
         </div>
       </div>

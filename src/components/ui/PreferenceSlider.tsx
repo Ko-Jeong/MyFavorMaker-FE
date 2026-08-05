@@ -9,21 +9,26 @@ export default function PreferenceSlider({
   leftPercent: number;
 }) {
   const clamped = Math.max(0, Math.min(100, leftPercent));
+  const rightPercent = 100 - clamped;
+  const isRightHigher = rightPercent > clamped;
+  const isLeftHigher = clamped > rightPercent;
 
   return (
     <div className="flex items-center gap-2">
-      <span className="text-xs text-zinc-500">왼</span>
+      <span className={isLeftHigher ? "text-xs font-semibold text-primary" : "text-xs text-zinc-500"}>
+        왼
+      </span>
       <div className="relative h-1 flex-1 rounded-full bg-zinc-200">
         <div
-          className="absolute left-0 top-0 h-full rounded-full bg-primary"
-          style={{ width: `${clamped}%` }}
-        />
-        <div
-          className="absolute top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary"
-          style={{ left: `${clamped}%` }}
+          className={`absolute top-0 h-full rounded-full bg-primary ${
+            isRightHigher ? "right-0" : "left-0"
+          }`}
+          style={{ width: `${isRightHigher ? rightPercent : clamped}%` }}
         />
       </div>
-      <span className="text-xs text-zinc-500">른</span>
+      <span className={isRightHigher ? "text-xs font-semibold text-primary" : "text-xs text-zinc-500"}>
+        른
+      </span>
     </div>
   );
 }
