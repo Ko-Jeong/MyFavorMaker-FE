@@ -106,16 +106,18 @@ export default function ExportPage() {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(true);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
-  const [supportsNativeShare, setSupportsNativeShare] = useState(false);
-  const [previewScale, setPreviewScale] = useState(1);
-  const shareText = "cpmaker.vercel.app";
+  const [supportsNativeShare] = useState(() => {
+    if (typeof window === "undefined" || typeof navigator === "undefined") {
+      return false;
+    }
 
-  useEffect(() => {
     const isTouchDevice =
       window.matchMedia("(pointer: coarse)").matches || navigator.maxTouchPoints > 0;
 
-    setSupportsNativeShare(typeof navigator.share === "function" && isTouchDevice);
-  }, []);
+    return typeof navigator.share === "function" && isTouchDevice;
+  });
+  const [previewScale, setPreviewScale] = useState(1);
+  const shareText = "cpmaker.vercel.app";
 
   useEffect(() => {
     let cancelled = false;
