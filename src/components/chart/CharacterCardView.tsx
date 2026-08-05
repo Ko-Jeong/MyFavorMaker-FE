@@ -8,6 +8,11 @@ import MemberPhoto from "@/components/chart/MemberPhoto";
  * 구성: 사진 · 이름 · 왼/른 퍼센트 텍스트 · 퍼센트바 · 코멘트
  */
 export default function CharacterCardView({ card }: { card: CharacterCard }) {
+  const right = rightPercent(card);
+  const isBalanced = card.leftPercent === right;
+  const leftClass = !isBalanced && card.leftPercent > right ? "font-bold" : "";
+  const rightClass = !isBalanced && right > card.leftPercent ? "font-bold" : "";
+
   return (
     <Card>
       <div className="flex items-center gap-3">
@@ -24,9 +29,8 @@ export default function CharacterCardView({ card }: { card: CharacterCard }) {
           <p className="font-bold text-zinc-900">{card.name}</p>
           {/* 왼/른 퍼센트 텍스트 */}
           <p className="text-sm text-zinc-500">
-            왼 <span className="font-bold text-zinc-500">{card.leftPercent}%</span>{" "}
-            | 른{" "}
-            <span className="font-bold text-zinc-500">{rightPercent(card)}%</span>
+            왼 <span className={leftClass}>{card.leftPercent}%</span> | 른{" "}
+            <span className={rightClass}>{right}%</span>
           </p>
         </div>
       </div>
