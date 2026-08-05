@@ -76,6 +76,31 @@ function PreviewControls({
   );
 }
 
+function LoadingDots() {
+  return (
+    <span className="flex items-center gap-2" aria-hidden="true">
+      <span
+        className="h-2.5 w-2.5 rounded-full bg-zinc-400"
+        style={{ animation: "loadingDotBounce 1.35s ease-in-out infinite" }}
+      />
+      <span
+        className="h-2.5 w-2.5 rounded-full bg-zinc-400"
+        style={{
+          animation: "loadingDotBounce 1.35s ease-in-out infinite",
+          animationDelay: "0.16s",
+        }}
+      />
+      <span
+        className="h-2.5 w-2.5 rounded-full bg-zinc-400"
+        style={{
+          animation: "loadingDotBounce 1.35s ease-in-out infinite",
+          animationDelay: "0.32s",
+        }}
+      />
+    </span>
+  );
+}
+
 function ExportCaptureContent() {
   const { chart } = useChartStore();
   const [leftColumnCards, rightColumnCards] = splitCardsByColumns(chart.cards);
@@ -231,26 +256,7 @@ export default function ExportPage() {
       {isGenerating ? (
         <div className="flex flex-1 items-center justify-center">
           <div className="flex flex-col items-center gap-4 text-zinc-400">
-            <span className="flex items-center gap-2" aria-hidden="true">
-              <span
-                className="h-2.5 w-2.5 rounded-full bg-zinc-400"
-                style={{ animation: "loadingDotBounce 1.35s ease-in-out infinite" }}
-              />
-              <span
-                className="h-2.5 w-2.5 rounded-full bg-zinc-400"
-                style={{
-                  animation: "loadingDotBounce 1.35s ease-in-out infinite",
-                  animationDelay: "0.16s",
-                }}
-              />
-              <span
-                className="h-2.5 w-2.5 rounded-full bg-zinc-400"
-                style={{
-                  animation: "loadingDotBounce 1.35s ease-in-out infinite",
-                  animationDelay: "0.32s",
-                }}
-              />
-            </span>
+            <LoadingDots />
             <span className="text-base">이미지 생성 중</span>
           </div>
         </div>
