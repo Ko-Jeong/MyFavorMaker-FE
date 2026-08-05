@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Download } from "lucide-react";
+import { Download, Minimize2 } from "lucide-react";
 import { toPng } from "html-to-image";
 import { useEffect, useRef, useState } from "react";
 import { useChartStore } from "@/store/useChartStore";
@@ -41,6 +41,7 @@ export default function ExportPage() {
   const [isGenerating, setIsGenerating] = useState(true);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [supportsNativeShare, setSupportsNativeShare] = useState(false);
+  const [previewScale, setPreviewScale] = useState(1);
   const shareText = "cpmaker.vercel.app";
 
   useEffect(() => {
@@ -132,6 +133,28 @@ export default function ExportPage() {
     window.open(intentUrl, "_blank", "noopener,noreferrer");
   };
 
+  const handleOpenPreview = () => {
+    if (!imageUrl) {
+      return;
+    }
+
+    setPreviewScale(1);
+    setIsPreviewOpen(true);
+  };
+
+  const handleClosePreview = () => {
+    setIsPreviewOpen(false);
+    setPreviewScale(1);
+  };
+
+  const handleZoomOut = () => {
+    setPreviewScale((prev) => Math.max(0.5, Number((prev - 0.1).toFixed(2))));
+  };
+
+  const handleZoomIn = () => {
+    setPreviewScale((prev) => Math.min(2, Number((prev + 0.1).toFixed(2))));
+  };
+
   return (
     <div className="screen-pad select-none flex flex-1 flex-col">
       <h1 className="font-title text-[30px]">취향표 저장과 공유</h1>
@@ -167,7 +190,7 @@ export default function ExportPage() {
         <div className="mt-4 flex justify-center">
           <button
             type="button"
-            onClick={() => imageUrl && setIsPreviewOpen(true)}
+            onClick={handleOpenPreview}
             className="block overflow-hidden rounded-[10px]"
             aria-label="내보내기 이미지 미리보기 열기"
           >
@@ -242,18 +265,65 @@ export default function ExportPage() {
       </div>
 
       {isPreviewOpen && imageUrl && (
-        <button
-          type="button"
-          onClick={() => setIsPreviewOpen(false)}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/55 p-6"
-          aria-label="미리보기 이미지 닫기"
+        <div
+          className="fixed inset-0 z-50 bg-black/55 p-6"
+          onClick={handleClosePreview}
         >
-          <img
-            src={imageUrl}
-            alt="확대된 취향표 이미지"
-            className="h-auto max-h-[calc(100vh-48px)] w-auto max-w-[min(960px,100%)] rounded-[24px] bg-white object-contain shadow-2xl"
-          />
-        </button>
+          <div className="flex min-h-full items-center justify-center">
+            <div className="flex w-fit max-w-full flex-col items-center gap-6">
+              <img
+                src={imageUrl}
+                alt="확대된 취향표 이미지"
+                onClick={(event) => event.stopPropagation()}
+                className="h-auto max-h-[calc(100vh-148px)] w-auto max-w-[min(960px,100%)] rounded-[24px] bg-white object-contain shadow-2xl transition-transform duration-200"
+                style={{
+                  transform: `scale(${previewScale})`,
+                  transformOrigin: "center center",
+                }}
+              />
+
+              <div
+                className="flex items-center overflow-hidden rounded-xl bg-black/70 text-white"
+                onClick={(event) => event.stopPropagation()}
+              >
+                <button
+                  type="button"
+                  onClick={handleZoomOut}
+                  className="flex h-14 w-14 items-center justify-center text-[30px] leading-none disabled:opacity-40"
+                  disabled={previewScale <= 0.5}
+                  aria-label="축소"
+                >
+                  -
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPreviewScale(1)}
+                  className="flex h-14 min-w-[104px] items-center justify-center border-x border-white/15 px-5 text-[18px] font-medium"
+                  aria-label="배율 초기화"
+                >
+                  {Math.round(previewScale * 100)}%
+                </button>
+                <button
+                  type="button"
+                  onClick={handleZoomIn}
+                  className="flex h-14 w-14 items-center justify-center text-[30px] leading-none disabled:opacity-40"
+                  disabled={previewScale >= 2}
+                  aria-label="확대"
+                >
+                  +
+                </button>
+                <button
+                  type="button"
+                  onClick={handleClosePreview}
+                  className="flex h-14 w-14 items-center justify-center border-l border-white/15"
+                  aria-label="미리보기 닫기"
+                >
+                  <Minimize2 className="h-5 w-5" strokeWidth={2.2} />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
