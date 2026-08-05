@@ -11,18 +11,23 @@ const CAPTURE_WIDTH = 780;
 
 function ExportCaptureContent() {
   const { chart } = useChartStore();
+  const leftColumnCards = chart.cards.filter((_, index) => index % 2 === 0);
+  const rightColumnCards = chart.cards.filter((_, index) => index % 2 === 1);
 
   return (
     <div className="w-[780px] bg-white px-6 py-5 text-zinc-900">
       <p className="mb-4 text-[28px] font-bold">{chart.title}</p>
       <div className="grid grid-cols-2 gap-4">
-        {chart.cards.map((card) => (
-          <CharacterCardView
-            key={card.id}
-            card={card}
-            shadow={false}
-          />
-        ))}
+        <div className="flex flex-col gap-4">
+          {leftColumnCards.map((card) => (
+            <CharacterCardView key={card.id} card={card} shadow={false} />
+          ))}
+        </div>
+        <div className="flex flex-col gap-4">
+          {rightColumnCards.map((card) => (
+            <CharacterCardView key={card.id} card={card} shadow={false} />
+          ))}
+        </div>
       </div>
       <p className="mt-4 text-xs text-zinc-400">cpmaker.vercel.app</p>
     </div>
