@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Download } from "lucide-react";
 import { useChartStore } from "@/store/useChartStore";
 import CharacterCardView from "@/components/chart/CharacterCardView";
 
@@ -41,23 +42,31 @@ export default function ExportPage() {
       <div className="mt-8 flex justify-center gap-10">
         <button
           onClick={handleSave}
-          className="flex flex-col items-center gap-2 text-xs text-zinc-600"
+          aria-label="취향표 저장"
+          className="flex flex-col items-center gap-2 text-center text-[13px] leading-[1.35] text-zinc-700"
         >
           <span className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-white">
-            ↓
+            <Download className="h-5 w-5" strokeWidth={2.2} />
           </span>
-          취향표
-          <br />저장
+          <span>
+            취향표
+            <br />
+            저장
+          </span>
         </button>
         <button
           onClick={handleShareX}
-          className="flex flex-col items-center gap-2 text-xs text-zinc-600"
+          aria-label="X로 공유하기"
+          className="flex flex-col items-center gap-2 text-center text-[13px] leading-[1.35] text-zinc-700"
         >
           <span className="flex h-12 w-12 items-center justify-center rounded-full bg-black text-white">
-            X
+            <img src="/icons/x.svg" alt="" aria-hidden="true" className="h-4.5 w-4.5" />
           </span>
-          X로
-          <br />공유하기
+          <span>
+            X로
+            <br />
+            공유하기
+          </span>
         </button>
       </div>
 
