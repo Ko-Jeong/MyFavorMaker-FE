@@ -89,26 +89,54 @@ export default function ExportPage() {
       <h1 className="font-title text-[30px]">취향표 저장과 공유</h1>
       <p className="mt-2 text-sm text-zinc-500">사진을 눌러 확인해보세요!</p>
 
-      <div className="mt-4 flex justify-center">
-        <button
-          type="button"
-          onClick={() => imageUrl && setIsPreviewOpen(true)}
-          className="block overflow-hidden rounded-[10px] bg-zinc-100 shadow-[0_12px_30px_rgba(0,0,0,0.08)]"
-          aria-label="내보내기 이미지 미리보기 열기"
-        >
-          {imageUrl ? (
+      {isGenerating ? (
+        <div className="flex flex-1 items-center justify-center">
+          <div className="flex flex-col items-center gap-4 text-zinc-400">
+            <span className="flex items-center gap-2" aria-hidden="true">
+              <span
+                className="h-2.5 w-2.5 rounded-full bg-zinc-400"
+                style={{ animation: "loadingDotBounce 1.2s ease-in-out infinite" }}
+              />
+              <span
+                className="h-2.5 w-2.5 rounded-full bg-zinc-400"
+                style={{
+                  animation: "loadingDotBounce 1.2s ease-in-out infinite",
+                  animationDelay: "0.15s",
+                }}
+              />
+              <span
+                className="h-2.5 w-2.5 rounded-full bg-zinc-400"
+                style={{
+                  animation: "loadingDotBounce 1.2s ease-in-out infinite",
+                  animationDelay: "0.3s",
+                }}
+              />
+            </span>
+            <span className="text-base">이미지 생성 중</span>
+          </div>
+        </div>
+      ) : (
+        <div className="mt-4 flex justify-center">
+          <button
+            type="button"
+            onClick={() => imageUrl && setIsPreviewOpen(true)}
+            className="block overflow-hidden rounded-[10px]"
+            aria-label="내보내기 이미지 미리보기 열기"
+          >
+            {imageUrl ? (
             <img
               src={imageUrl}
               alt="취향표 미리보기 이미지"
               className="w-full max-w-full"
             />
           ) : (
-            <div className="flex aspect-[780/430] w-full min-w-0 max-w-full items-center justify-center text-sm text-zinc-400">
-              {isGenerating ? "이미지 생성 중..." : "이미지를 만들지 못했어요"}
+            <div className="flex aspect-[780/430] w-full min-w-0 max-w-full items-center justify-center">
+              <span className="text-sm text-zinc-400">이미지를 만들지 못했어요</span>
             </div>
-          )}
-        </button>
-      </div>
+            )}
+          </button>
+        </div>
+      )}
 
       <div className="mt-auto border-t border-dashed border-zinc-300 pb-[calc(env(safe-area-inset-bottom)+12px)] pt-6">
         <div className="flex items-center justify-between text-sm font-medium">
@@ -174,7 +202,7 @@ export default function ExportPage() {
           <img
             src={imageUrl}
             alt="확대된 취향표 이미지"
-            className="max-h-full w-full max-w-[960px] rounded-[24px] bg-white shadow-2xl"
+            className="h-auto max-h-[calc(100vh-48px)] w-auto max-w-[min(960px,100%)] rounded-[24px] bg-white object-contain shadow-2xl"
           />
         </button>
       )}
