@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useChartStore } from "@/store/useChartStore";
 import CharacterCardView from "@/components/chart/CharacterCardView";
+import PageNavigation from "@/components/ui/PageNavigation";
 import {
   getChartEntryHref,
   getChartEntrySource,
@@ -32,28 +32,10 @@ export default function PreviewPage() {
           <CharacterCardView key={card.id} card={card} />
         ))}
       </div>
-
-      {/* 이전 / 다음 */}
-      <div className="mt-auto flex items-center justify-between pb-[calc(env(safe-area-inset-bottom)+12px)] pt-6 text-sm font-medium">
-        <Link href={editorHref} className="inline-flex items-center gap-1.5 text-[16px] text-zinc-500">
-          <img
-            src="/icons/nav-left.svg"
-            alt=""
-            aria-hidden="true"
-            className="h-4.3 w-4.3"
-          />
-          이전
-        </Link>
-        <Link href={exportHref} className="inline-flex items-center gap-1.5 text-[16px] text-zinc-500">
-          다음
-          <img
-            src="/icons/nav-right.svg"
-            alt=""
-            aria-hidden="true"
-            className="h-4.3 w-4.3"
-          />
-        </Link>
-      </div>
+      <PageNavigation
+        previous={{ href: editorHref, label: "이전" }}
+        next={{ href: exportHref, label: "다음" }}
+      />
     </div>
   );
 }

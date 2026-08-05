@@ -33,6 +33,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { useChartStore } from "@/store/useChartStore";
 import CharacterCardEdit from "@/components/chart/CharacterCard";
 import Button from "@/components/ui/Button";
+import PageNavigation from "@/components/ui/PageNavigation";
 import {
   getChartEntryHref,
   getChartEntrySource,
@@ -291,6 +292,7 @@ export default function EditorPage() {
           </button>
         </div>
       )}
+      <PageNavigation previous={{ href: "/charts", label: "이전" }} />
     </div>
   );
 }
