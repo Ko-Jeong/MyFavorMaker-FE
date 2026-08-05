@@ -7,6 +7,7 @@ import { toPng } from "html-to-image";
 import { useEffect, useRef, useState } from "react";
 import { useChartStore } from "@/store/useChartStore";
 import CharacterCardView from "@/components/chart/CharacterCardView";
+import PageNavigation from "@/components/ui/PageNavigation";
 import { type CharacterCard } from "@/types/chart";
 import {
   getChartEntryHref,
@@ -291,20 +292,11 @@ export default function ExportPage() {
           </button>
         </div>
       )}
-
-      <div className="mt-auto border-t border-dashed border-zinc-300 pb-[calc(env(safe-area-inset-bottom)+12px)] pt-6">
-        <div className="flex items-center justify-between text-sm font-medium">
-          <Link href={previewHref} className="inline-flex items-center gap-1.5 text-[16px] text-zinc-500">
-            <img
-              src="/icons/nav-left.svg"
-              alt=""
-              aria-hidden="true"
-              className="h-4.3 w-4.3"
-            />
-            이전
-          </Link>
-          <span aria-hidden="true" className="w-[72px]" />
-        </div>
+      <div className="mt-auto">
+        <PageNavigation
+          previous={{ href: previewHref, label: "이전" }}
+          withTopBorder
+        />
 
         <div className="mt-6 flex justify-center gap-10">
           <button
