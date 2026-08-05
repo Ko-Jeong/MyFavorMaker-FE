@@ -35,6 +35,15 @@ export default function ExportPage() {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(true);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [supportsNativeShare, setSupportsNativeShare] = useState(false);
+  const shareText = "cpmaker.vercel.app";
+
+  useEffect(() => {
+    const isTouchDevice =
+      window.matchMedia("(pointer: coarse)").matches || navigator.maxTouchPoints > 0;
+
+    setSupportsNativeShare(typeof navigator.share === "function" && isTouchDevice);
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -86,6 +95,36 @@ export default function ExportPage() {
     link.href = imageUrl;
     link.download = `${chart.title || "my-chart"}.png`;
     link.click();
+  };
+
+  const handleShareX = async () => {
+    if (!imageUrl) {
+      return;
+    }
+
+    if (supportsNativeShare) {
+      try {
+        const response = await fetch(imageUrl);
+        const blob = await response.blob();
+        const file = new File([blob], `${chart.title || "my-chart"}.png`, {
+          type: "image/png",
+        });
+
+        if (navigator.canShare?.({ files: [file] })) {
+          await navigator.share({
+            files: [file],
+            text: shareText,
+            title: chart.title || "나의 취향표",
+          });
+          return;
+        }
+      } catch (error) {
+        console.error("Failed to share export image", error);
+      }
+    }
+
+    const intentUrl = `https://x.com/intent/post?text=${encodeURIComponent(shareText)}`;
+    window.open(intentUrl, "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -174,9 +213,10 @@ export default function ExportPage() {
           </button>
           <button
             type="button"
+            onClick={() => void handleShareX()}
             aria-label="X로 공유하기"
-            disabled
-            className="flex flex-col items-center gap-2 text-center text-[13px] leading-[1.35] text-zinc-700 opacity-40"
+            disabled={!imageUrl}
+            className="flex flex-col items-center gap-2 text-center text-[13px] leading-[1.35] text-zinc-700 disabled:opacity-40"
           >
             <span className="flex h-12 w-12 items-center justify-center rounded-full bg-black text-white">
               <img src="/icons/x.svg" alt="" aria-hidden="true" className="h-4.5 w-4.5" />
