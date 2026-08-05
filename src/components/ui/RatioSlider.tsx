@@ -3,7 +3,6 @@
  * 유저가 직접 드래그로 조절하는 요소가 아니라,
  * leftPercent 값(텍스트로 입력됨)에 따라 자동으로 채워지는 시각 요소입니다.
  */
-export default function PreferenceSlider({
 export default function RatioSlider({
   leftPercent,
 }: {
