@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Download, Minimize2 } from "lucide-react";
+import { Download, Minus, Minimize2, Plus } from "lucide-react";
 import { toPng } from "html-to-image";
 import { useEffect, useRef, useState } from "react";
 import { useChartStore } from "@/store/useChartStore";
@@ -285,22 +285,22 @@ export default function ExportPage() {
               </div>
 
               <div
-                className="flex items-center overflow-hidden rounded-xl bg-black/70 text-white"
+                className="flex items-center overflow-hidden rounded-[10px] bg-black/70 text-white"
                 onClick={(event) => event.stopPropagation()}
               >
                 <button
                   type="button"
                   onClick={handleZoomOut}
-                  className="flex h-14 w-14 items-center justify-center text-[30px] leading-none disabled:opacity-40"
+                  className="flex h-8 w-9 items-center justify-end pr-1.5 disabled:opacity-40"
                   disabled={previewScale <= 0.5}
                   aria-label="축소"
                 >
-                  -
+                  <Minus className="h-3.5 w-3.5" strokeWidth={2.4} />
                 </button>
                 <button
                   type="button"
                   onClick={() => setPreviewScale(1)}
-                  className="flex h-14 min-w-[104px] items-center justify-center border-x border-white/15 px-5 text-[18px] font-medium"
+                  className="flex h-8 min-w-[52px] items-center justify-center px-1 text-[15px] font-medium"
                   aria-label="배율 초기화"
                 >
                   {Math.round(previewScale * 100)}%
@@ -308,19 +308,19 @@ export default function ExportPage() {
                 <button
                   type="button"
                   onClick={handleZoomIn}
-                  className="flex h-14 w-14 items-center justify-center text-[30px] leading-none disabled:opacity-40"
+                  className="flex h-8 w-9 items-center justify-start pl-1.5 disabled:opacity-40"
                   disabled={previewScale >= 2}
                   aria-label="확대"
                 >
-                  +
+                  <Plus className="h-3.5 w-3.5" strokeWidth={2.4} />
                 </button>
                 <button
                   type="button"
                   onClick={handleClosePreview}
-                  className="flex h-14 w-14 items-center justify-center border-l border-white/15"
+                  className="flex 9 w-9 items-center justify-center border-l border-white/15"
                   aria-label="미리보기 닫기"
                 >
-                  <Minimize2 className="h-5 w-5" strokeWidth={2.2} />
+                  <Minimize2 className="h-3.5 w-3.5" strokeWidth={2.4} />
                 </button>
               </div>
             </div>
