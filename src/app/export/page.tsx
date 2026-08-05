@@ -271,67 +271,66 @@ export default function ExportPage() {
           </div>
         </div>
       ) : (
-        <div className="mt-4 flex justify-center">
-          <button
-            type="button"
-            onClick={handleOpenPreview}
-            className="block overflow-hidden rounded-[10px]"
-            aria-label="내보내기 이미지 미리보기 열기"
-          >
-            {imageUrl ? (
-            <img
-              src={imageUrl}
-              alt="취향표 미리보기 이미지"
-              className="w-full max-w-full"
-            />
-          ) : (
-            <div className="flex aspect-[780/430] w-full min-w-0 max-w-full items-center justify-center">
-              <span className="text-sm text-zinc-400">이미지를 만들지 못했어요</span>
+        <div className="mt-4">
+          <div className="flex justify-center">
+            <button
+              type="button"
+              onClick={handleOpenPreview}
+              className="block overflow-hidden rounded-[10px]"
+              aria-label="내보내기 이미지 미리보기 열기"
+            >
+              {imageUrl ? (
+                <img
+                  src={imageUrl}
+                  alt="취향표 미리보기 이미지"
+                  className="w-full max-w-full"
+                />
+              ) : (
+                <div className="flex aspect-[780/430] w-full min-w-0 max-w-full items-center justify-center">
+                  <span className="text-sm text-zinc-400">이미지를 만들지 못했어요</span>
+                </div>
+              )}
+            </button>
+          </div>
+
+          <div className="mt-13 border-t border-dashed border-zinc-300 pt-13">
+            <div className="flex justify-center gap-10">
+              <button
+                onClick={handleSave}
+                aria-label="취향표 저장"
+                disabled={!imageUrl}
+                className="flex flex-col items-center gap-2 text-center text-[13px] leading-[1.35] text-zinc-700 disabled:opacity-40"
+              >
+                <span className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-white">
+                  <Download className="h-5 w-5" strokeWidth={2.2} />
+                </span>
+                <span>
+                  취향표
+                  <br />
+                  저장
+                </span>
+              </button>
+              <button
+                type="button"
+                onClick={() => void handleShareX()}
+                aria-label="X로 공유하기"
+                disabled={!imageUrl}
+                className="flex flex-col items-center gap-2 text-center text-[13px] leading-[1.35] text-zinc-700 disabled:opacity-40"
+              >
+                <span className="flex h-12 w-12 items-center justify-center rounded-full bg-black text-white">
+                  <img src="/icons/x.svg" alt="" aria-hidden="true" className="h-4.5 w-4.5" />
+                </span>
+                <span>
+                  X로
+                  <br />
+                  공유하기
+                </span>
+              </button>
             </div>
-            )}
-          </button>
+          </div>
         </div>
       )}
-      <div className="mt-auto">
-        <PageNavigation
-          previous={{ href: previewHref, label: "이전" }}
-          withTopBorder
-        />
-
-        <div className="mt-6 flex justify-center gap-10">
-          <button
-            onClick={handleSave}
-            aria-label="취향표 저장"
-            disabled={!imageUrl}
-            className="flex flex-col items-center gap-2 text-center text-[13px] leading-[1.35] text-zinc-700 disabled:opacity-40"
-          >
-            <span className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-white">
-              <Download className="h-5 w-5" strokeWidth={2.2} />
-            </span>
-            <span>
-              취향표
-              <br />
-              저장
-            </span>
-          </button>
-          <button
-            type="button"
-            onClick={() => void handleShareX()}
-            aria-label="X로 공유하기"
-            disabled={!imageUrl}
-            className="flex flex-col items-center gap-2 text-center text-[13px] leading-[1.35] text-zinc-700 disabled:opacity-40"
-          >
-            <span className="flex h-12 w-12 items-center justify-center rounded-full bg-black text-white">
-              <img src="/icons/x.svg" alt="" aria-hidden="true" className="h-4.5 w-4.5" />
-            </span>
-            <span>
-              X로
-              <br />
-              공유하기
-            </span>
-          </button>
-        </div>
-      </div>
+      <PageNavigation previous={{ href: previewHref, label: "이전" }} />
 
       <div className="pointer-events-none fixed -left-[9999px] top-0 opacity-0">
         <div ref={captureRef}>
