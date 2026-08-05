@@ -17,7 +17,11 @@ function ExportCaptureContent() {
       <p className="mb-4 text-[28px] font-bold">{chart.title}</p>
       <div className="grid grid-cols-2 gap-4">
         {chart.cards.map((card) => (
-          <CharacterCardView key={card.id} card={card} />
+          <CharacterCardView
+            key={card.id}
+            card={card}
+            shadow={false}
+          />
         ))}
       </div>
       <p className="mt-4 text-xs text-zinc-400">cpmaker.vercel.app</p>
@@ -87,7 +91,7 @@ export default function ExportPage() {
   return (
     <div className="screen-pad select-none flex flex-1 flex-col">
       <h1 className="font-title text-[30px]">취향표 저장과 공유</h1>
-      <p className="mt-2 text-sm text-zinc-500">사진을 눌러 확인해보세요!</p>
+      <p className="mt-2 text-sm text-zinc-500">이미지를 눌러 확인해 보세요</p>
 
       {isGenerating ? (
         <div className="flex flex-1 items-center justify-center">

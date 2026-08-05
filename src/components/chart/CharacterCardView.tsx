@@ -10,9 +10,11 @@ import MemberPhoto from "@/components/chart/MemberPhoto";
 export default function CharacterCardView({
   card,
   className = "",
+  shadow = true,
 }: {
   card: CharacterCard;
   className?: string;
+  shadow?: boolean;
 }) {
   const right = rightPercent(card);
   const isBalanced = card.leftPercent === right;
@@ -21,7 +23,7 @@ export default function CharacterCardView({
   const comment = card.comment?.trim() ?? "";
 
   return (
-    <Card className={className}>
+    <Card className={className} shadow={shadow}>
       <div className="flex items-center gap-3">
         {/* 사진 */}
         <div className="h-11 w-11 shrink-0 overflow-hidden rounded-full bg-zinc-200">
