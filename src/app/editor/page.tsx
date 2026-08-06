@@ -191,7 +191,14 @@ export default function EditorPage() {
     <div className="screen-pad flex flex-1 flex-col">
       <div className="relative pr-[84px]">
         <div className="flex items-center gap-1.5">
-          <div className="min-w-0" style={{ width: titleWidth ? `${titleWidth + 2}px` : undefined }}>
+          <div
+            className="min-w-0"
+            style={{
+              width: titleWidth
+                ? `min(${titleWidth + 2}px, calc(100% - 15px))`
+                : undefined,
+            }}
+          >
             <span
               ref={titleMeasureRef}
               className="pointer-events-none absolute -z-10 whitespace-pre font-title text-[30px] opacity-0"
@@ -205,8 +212,7 @@ export default function EditorPage() {
                 onChange={(e) => setTitle(e.target.value)}
                 onBlur={() => setIsEditingTitle(false)}
                 onKeyDown={stopTitleEditOnEnter}
-                className="w-full min-w-0 font-title text-[30px] text-zinc-900 placeholder:text-zinc-400 outline-none"
-                style={{ width: `${Math.max(titleWidth + 2, 12)}px` }}
+                className="block w-full min-w-0 overflow-hidden text-ellipsis whitespace-nowrap font-title text-[30px] text-zinc-900 placeholder:text-zinc-400 outline-none"
                 placeholder="나의 취향표"
               />
             ) : (

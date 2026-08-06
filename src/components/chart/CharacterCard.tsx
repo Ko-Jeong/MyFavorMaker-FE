@@ -147,10 +147,17 @@ export default function CharacterCardEdit({ card }: { card: CharacterCard }) {
           }}
         />
 
-        <div className="flex-1">
+        <div className="min-w-0 flex-1 pr-8">
           {/* 이름 */}
           <div className="flex items-center gap-1.5">
-            <div className="min-w-0" style={{ width: nameWidth ? `${nameWidth + 2}px` : undefined }}>
+            <div
+              className="min-w-0 max-w-full"
+              style={{
+                width: nameWidth
+                  ? `min(${nameWidth + 2}px, calc(100% - 15px))`
+                  : undefined,
+              }}
+            >
               <span
                 ref={nameMeasureRef}
                 className="pointer-events-none absolute -z-10 whitespace-pre font-semibold opacity-0"
@@ -164,8 +171,7 @@ export default function CharacterCardEdit({ card }: { card: CharacterCard }) {
                   onChange={(e) => updateCard(card.id, { name: e.target.value })}
                   onBlur={() => setIsEditingName(false)}
                   onKeyDown={stopNameEditOnEnter}
-                  className="w-full min-w-0 bg-transparent p-0 font-semibold text-zinc-900 placeholder:text-zinc-400 outline-none"
-                  style={{ width: `${Math.max(nameWidth + 2, 12)}px` }}
+                  className="block w-full min-w-0 overflow-hidden text-ellipsis whitespace-nowrap bg-transparent p-0 font-semibold text-zinc-900 placeholder:text-zinc-400 outline-none"
                   placeholder="name"
                 />
               ) : (

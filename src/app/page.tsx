@@ -38,7 +38,7 @@ export default function LandingPage() {
           <Bubble
             src="/landing/right-bubble-1.svg"
             alt=""
-            className="h-[36px] w-[114px]"
+            className="h-[36px] w-[104px] self-end"
           >
             <div className="flex h-full w-full items-center justify-center whitespace-nowrap px-3 text-center text-[16px] text-white">
               <span className="-translate-x-0.5">설명해줄게</span>
@@ -48,7 +48,7 @@ export default function LandingPage() {
           <Bubble
             src="/landing/right-bubble-2.svg"
             alt=""
-            className="h-[54px] w-[224px]"
+            className="h-[54px] w-[224px] self-end"
           >
             <div className="flex h-full w-full items-center justify-center px-5 text-white">
               <div className="-translate-x-2.5 flex items-center">
