@@ -13,6 +13,7 @@ import {
   getChartEntryHref,
   getChartEntrySource,
 } from "@/lib/chart-entry";
+import { optimizeImageSource } from "@/lib/optimize-image";
 
 const CAPTURE_WIDTH = 780;
 const EXPORT_IMAGE_EXTENSION = "jpg";
@@ -46,6 +47,47 @@ const waitForImages = async (root: HTMLElement) => {
         : Promise.resolve(),
     ),
   );
+};
+
+const optimizeCaptureImages = async (root: HTMLElement) => {
+  const images = Array.from(root.querySelectorAll("img"));
+
+  await Promise.all(
+    images.map(async (image) => {
+      const source = image.currentSrc || image.src;
+      if (!source) return;
+
+      image.src = await optimizeImageSource(source);
+    }),
+  );
+};
+
+const createExportBlob = async (node: HTMLElement) => {
+  let lastError: unknown;
+
+  for (const { pixelRatio, quality } of [
+    { pixelRatio: 2, quality: 0.9 },
+    { pixelRatio: 1.5, quality: 0.85 },
+  ]) {
+    try {
+      const blob = await toBlob(node, {
+        backgroundColor: "#ffffff",
+        cacheBust: true,
+        pixelRatio,
+        width: CAPTURE_WIDTH,
+        type: "image/jpeg",
+        quality,
+      });
+
+      if (blob) return blob;
+    } catch (error) {
+      lastError = error;
+    }
+  }
+
+  throw lastError instanceof Error
+    ? lastError
+    : new Error("Export image blob was not created");
 };
 
 function splitCardsByColumns(cards: CharacterCard[]) {
@@ -204,18 +246,9 @@ function ExportPageContent() {
 
       try {
         await document.fonts.ready;
+        await optimizeCaptureImages(captureRef.current);
         await waitForImages(captureRef.current);
-        const imageBlob = await toBlob(captureRef.current, {
-          backgroundColor: "#ffffff",
-          cacheBust: true,
-          pixelRatio: 1.5,
-          width: CAPTURE_WIDTH,
-          type: "image/jpeg",
-          quality: 0.85,
-        });
-        if (!imageBlob) {
-          throw new Error("Export image blob was not created");
-        }
+        const imageBlob = await createExportBlob(captureRef.current);
 
         const nextImageUrl = URL.createObjectURL(imageBlob);
 

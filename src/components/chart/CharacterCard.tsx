@@ -14,14 +14,12 @@ import RatioSlider from "@/components/ui/RatioSlider";
 import Card from "@/components/ui/Card";
 import MemberPhoto from "@/components/chart/MemberPhoto";
 import RatioSummary from "@/components/chart/RatioSummary";
+import { optimizeImageSource } from "@/lib/optimize-image";
 
 const syncTextareaHeight = (element: HTMLTextAreaElement) => {
   element.style.height = "0px";
   element.style.height = `${element.scrollHeight}px`;
 };
-
-const MAX_PHOTO_SIZE = 1024;
-const PHOTO_QUALITY = 0.82;
 
 function PencilIcon() {
   return (
@@ -66,31 +64,9 @@ export default function CharacterCardEdit({ card }: { card: CharacterCard }) {
       const result = reader.result;
       if (typeof result !== "string") return;
 
-      const image = new Image();
-      image.onload = () => {
-        const scale = Math.min(
-          1,
-          MAX_PHOTO_SIZE / Math.max(image.naturalWidth, image.naturalHeight),
-        );
-        const canvas = document.createElement("canvas");
-        canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
-        canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
-
-        const context = canvas.getContext("2d");
-        if (!context) {
-          updateCard(card.id, { photoUrl: result });
-          return;
-        }
-
-        context.drawImage(image, 0, 0, canvas.width, canvas.height);
-        updateCard(card.id, {
-          photoUrl: canvas.toDataURL("image/jpeg", PHOTO_QUALITY),
-        });
-      };
-      image.onerror = () => {
-        updateCard(card.id, { photoUrl: result });
-      };
-      image.src = result;
+      void optimizeImageSource(result).then((optimized) => {
+        updateCard(card.id, { photoUrl: optimized });
+      });
     };
     reader.onerror = () => {
       reader.abort();
