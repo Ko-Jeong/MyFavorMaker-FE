@@ -37,6 +37,8 @@ export const getTemplateChartFromParams = (
   return groupToChart(group);
 };
 
+let hasHandledBrowserReload = false;
+
 export const isBrowserReload = (pathname?: string) => {
   if (typeof window === "undefined" || typeof performance === "undefined") {
     return false;
@@ -50,13 +52,24 @@ export const isBrowserReload = (pathname?: string) => {
     return false;
   }
 
-  if (!pathname) {
-    return true;
+  if (hasHandledBrowserReload) {
+    return false;
   }
 
-  const entryUrl = navigationEntry.name
-    ? new URL(navigationEntry.name)
-    : null;
+  if (pathname) {
+    const entryUrl = navigationEntry.name
+      ? new URL(navigationEntry.name)
+      : null;
 
-  return entryUrl?.pathname === pathname;
+    if (entryUrl?.pathname !== pathname) {
+      return false;
+    }
+  }
+
+  // `performance.getEntriesByType("navigation")` describes the whole
+  // document, so it still says "reload" when a client-side navigation later
+  // mounts this page again. Consume the reload signal once per document to
+  // avoid resetting edits when returning from preview.
+  hasHandledBrowserReload = true;
+  return true;
 };
