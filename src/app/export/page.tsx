@@ -280,11 +280,6 @@ function ExportPageContent() {
         const nextImageUrl = URL.createObjectURL(imageBlob);
 
         if (!cancelled) {
-          if (reloadExportOnce()) {
-            URL.revokeObjectURL(nextImageUrl);
-            return;
-          }
-
           imageUrlRef.current = nextImageUrl;
           setImageUrl(nextImageUrl);
         } else {
@@ -308,6 +303,14 @@ function ExportPageContent() {
       cancelled = true;
     };
   }, [chart]);
+
+  useEffect(() => {
+    if (isGenerating) {
+      return;
+    }
+
+    reloadExportOnce();
+  }, [isGenerating]);
 
   useEffect(() => {
     return () => {
