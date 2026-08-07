@@ -17,6 +17,21 @@ import { optimizeImageSource } from "@/lib/optimize-image";
 
 const CAPTURE_WIDTH = 780;
 const EXPORT_IMAGE_EXTENSION = "jpg";
+const EXPORT_RELOAD_PARAM = "exportReloaded";
+
+const reloadExportOnce = () => {
+  const url = new URL(window.location.href);
+
+  if (url.searchParams.get(EXPORT_RELOAD_PARAM) === "1") {
+    url.searchParams.delete(EXPORT_RELOAD_PARAM);
+    window.history.replaceState(null, "", url.toString());
+    return false;
+  }
+
+  url.searchParams.set(EXPORT_RELOAD_PARAM, "1");
+  window.location.replace(url.toString());
+  return true;
+};
 
 const waitForImages = async (root: HTMLElement) => {
   const images = Array.from(root.querySelectorAll("img"));
@@ -264,6 +279,11 @@ function ExportPageContent() {
         const nextImageUrl = URL.createObjectURL(imageBlob);
 
         if (!cancelled) {
+          if (reloadExportOnce()) {
+            URL.revokeObjectURL(nextImageUrl);
+            return;
+          }
+
           imageUrlRef.current = nextImageUrl;
           setImageUrl(nextImageUrl);
         } else {
