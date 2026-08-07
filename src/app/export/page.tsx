@@ -16,6 +16,37 @@ import {
 
 const CAPTURE_WIDTH = 780;
 
+const waitForImages = async (root: HTMLElement) => {
+  const images = Array.from(root.querySelectorAll("img"));
+
+  await Promise.all(
+    images.map((image) => {
+      if (image.complete) {
+        return Promise.resolve();
+      }
+
+      return new Promise<void>((resolve) => {
+        const finish = () => {
+          image.removeEventListener("load", finish);
+          image.removeEventListener("error", finish);
+          resolve();
+        };
+
+        image.addEventListener("load", finish, { once: true });
+        image.addEventListener("error", finish, { once: true });
+      });
+    }),
+  );
+
+  await Promise.all(
+    images.map((image) =>
+      typeof image.decode === "function"
+        ? image.decode().catch(() => undefined)
+        : Promise.resolve(),
+    ),
+  );
+};
+
 function splitCardsByColumns(cards: CharacterCard[]) {
   return cards.reduce<[CharacterCard[], CharacterCard[]]>(
     (columns, card, index) => {
@@ -166,6 +197,7 @@ export default function ExportPage() {
 
       try {
         await document.fonts.ready;
+        await waitForImages(captureRef.current);
         const nextImageUrl = await toPng(captureRef.current, {
           backgroundColor: "#ffffff",
           cacheBust: true,
