@@ -31,6 +31,9 @@ const reloadExportOnce = () => {
   url.searchParams.set(EXPORT_RELOAD_PARAM, "1");
   window.history.replaceState(null, "", url.toString());
   window.location.reload();
+  window.setTimeout(() => {
+    window.location.href = url.toString();
+  }, 250);
   return true;
 };
 
