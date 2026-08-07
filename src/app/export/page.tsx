@@ -326,7 +326,7 @@ function ExportPageContent() {
   return (
     <div className="screen-pad select-none flex flex-1 flex-col">
       <h1 className="page-title">취향표 저장과 공유</h1>
-      <p className="mt-2 text-sm text-zinc-500">이미지를 눌러 확인해 보세요</p>
+      <p className="mt-2 text-sm text-zinc-500">이미지를 꾹 눌러 저장할 수 있어요</p>
 
       {isGenerating ? (
         <div className="flex flex-1 items-center justify-center">
