@@ -42,7 +42,11 @@ export const optimizeImageSource = (
       context.drawImage(image, 0, 0, width, height);
       return canvas.toDataURL("image/jpeg", quality);
     })
-    .catch(() => src);
+    .catch(() => {
+      // 일시적인 로딩 실패는 다음 export 시 다시 시도할 수 있어야 합니다.
+      optimizedImageCache.delete(src);
+      return src;
+    });
 
   optimizedImageCache.set(src, optimized);
   return optimized;

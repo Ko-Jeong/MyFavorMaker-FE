@@ -23,12 +23,15 @@ const waitForImages = async (root: HTMLElement) => {
 
   await Promise.all(
     images.map((image) => {
-      if (image.complete) {
+      if (image.complete && image.naturalWidth > 0) {
         return Promise.resolve();
       }
 
       return new Promise<void>((resolve) => {
+        let timeout: number;
+
         const finish = () => {
+          window.clearTimeout(timeout);
           image.removeEventListener("load", finish);
           image.removeEventListener("error", finish);
           resolve();
@@ -36,6 +39,7 @@ const waitForImages = async (root: HTMLElement) => {
 
         image.addEventListener("load", finish, { once: true });
         image.addEventListener("error", finish, { once: true });
+        timeout = window.setTimeout(finish, 5000);
       });
     }),
   );
@@ -48,6 +52,11 @@ const waitForImages = async (root: HTMLElement) => {
     ),
   );
 };
+
+const waitForNextPaint = () =>
+  new Promise<void>((resolve) => {
+    requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
+  });
 
 const optimizeCaptureImages = async (root: HTMLElement) => {
   const images = Array.from(root.querySelectorAll("img"));
@@ -246,8 +255,10 @@ function ExportPageContent() {
 
       try {
         await document.fonts.ready;
+        await waitForNextPaint();
         await optimizeCaptureImages(captureRef.current);
         await waitForImages(captureRef.current);
+        await waitForNextPaint();
         const imageBlob = await createExportBlob(captureRef.current);
 
         const nextImageUrl = URL.createObjectURL(imageBlob);
