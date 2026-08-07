@@ -62,6 +62,34 @@ const optimizeCaptureImages = async (root: HTMLElement) => {
   );
 };
 
+const createExportBlob = async (node: HTMLElement) => {
+  let lastError: unknown;
+
+  for (const { pixelRatio, quality } of [
+    { pixelRatio: 2, quality: 0.9 },
+    { pixelRatio: 1.5, quality: 0.85 },
+  ]) {
+    try {
+      const blob = await toBlob(node, {
+        backgroundColor: "#ffffff",
+        cacheBust: true,
+        pixelRatio,
+        width: CAPTURE_WIDTH,
+        type: "image/jpeg",
+        quality,
+      });
+
+      if (blob) return blob;
+    } catch (error) {
+      lastError = error;
+    }
+  }
+
+  throw lastError instanceof Error
+    ? lastError
+    : new Error("Export image blob was not created");
+};
+
 function splitCardsByColumns(cards: CharacterCard[]) {
   return cards.reduce<[CharacterCard[], CharacterCard[]]>(
     (columns, card, index) => {
@@ -220,17 +248,7 @@ function ExportPageContent() {
         await document.fonts.ready;
         await optimizeCaptureImages(captureRef.current);
         await waitForImages(captureRef.current);
-        const imageBlob = await toBlob(captureRef.current, {
-          backgroundColor: "#ffffff",
-          cacheBust: true,
-          pixelRatio: 1.5,
-          width: CAPTURE_WIDTH,
-          type: "image/jpeg",
-          quality: 0.85,
-        });
-        if (!imageBlob) {
-          throw new Error("Export image blob was not created");
-        }
+        const imageBlob = await createExportBlob(captureRef.current);
 
         const nextImageUrl = URL.createObjectURL(imageBlob);
 
