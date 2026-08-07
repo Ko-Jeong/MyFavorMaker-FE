@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import MobileFrame from "@/components/layout/MobileFrame";
 
@@ -45,6 +46,7 @@ export default function RootLayout({
     <html lang="ko" className="h-full antialiased">
       <body className="min-h-full">
         <MobileFrame>{children}</MobileFrame>
+        <Analytics />
       </body>
     </html>
   );
