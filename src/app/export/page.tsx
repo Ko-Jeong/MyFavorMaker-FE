@@ -13,6 +13,7 @@ import {
   getChartEntryHref,
   getChartEntrySource,
 } from "@/lib/chart-entry";
+import { optimizeImageSource } from "@/lib/optimize-image";
 
 const CAPTURE_WIDTH = 780;
 const EXPORT_IMAGE_EXTENSION = "jpg";
@@ -45,6 +46,19 @@ const waitForImages = async (root: HTMLElement) => {
         ? image.decode().catch(() => undefined)
         : Promise.resolve(),
     ),
+  );
+};
+
+const optimizeCaptureImages = async (root: HTMLElement) => {
+  const images = Array.from(root.querySelectorAll("img"));
+
+  await Promise.all(
+    images.map(async (image) => {
+      const source = image.currentSrc || image.src;
+      if (!source) return;
+
+      image.src = await optimizeImageSource(source);
+    }),
   );
 };
 
@@ -204,6 +218,7 @@ function ExportPageContent() {
 
       try {
         await document.fonts.ready;
+        await optimizeCaptureImages(captureRef.current);
         await waitForImages(captureRef.current);
         const imageBlob = await toBlob(captureRef.current, {
           backgroundColor: "#ffffff",
