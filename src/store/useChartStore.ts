@@ -12,6 +12,8 @@ import {
 
 interface ChartState {
   chart: Chart;
+  hasHydrated: boolean;
+  setHasHydrated: (hasHydrated: boolean) => void;
   // --- 취향표 단위 ---
   setTitle: (title: string) => void;
   loadChart: (chart: Chart) => void;
@@ -33,6 +35,8 @@ export const useChartStore = create<ChartState>()(
   persist(
     (set) => ({
       chart: emptyChart(),
+      hasHydrated: false,
+      setHasHydrated: (hasHydrated) => set({ hasHydrated }),
 
       setTitle: (title) =>
         set((s) => ({ chart: { ...s.chart, title } })),
@@ -92,6 +96,9 @@ export const useChartStore = create<ChartState>()(
       name: "cp-maker-chart",
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({ chart: state.chart }),
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true);
+      },
     },
   ),
 );

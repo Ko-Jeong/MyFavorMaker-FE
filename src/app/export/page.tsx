@@ -17,25 +17,6 @@ import { optimizeImageSource } from "@/lib/optimize-image";
 
 const CAPTURE_WIDTH = 780;
 const EXPORT_IMAGE_EXTENSION = "jpg";
-const EXPORT_RELOAD_PARAM = "exportReloaded";
-
-const reloadExportOnce = () => {
-  const url = new URL(window.location.href);
-
-  if (url.searchParams.get(EXPORT_RELOAD_PARAM) === "1") {
-    url.searchParams.delete(EXPORT_RELOAD_PARAM);
-    window.history.replaceState(null, "", url.toString());
-    return false;
-  }
-
-  url.searchParams.set(EXPORT_RELOAD_PARAM, "1");
-  window.history.replaceState(null, "", url.toString());
-  window.location.reload();
-  window.setTimeout(() => {
-    window.location.href = url.toString();
-  }, 250);
-  return true;
-};
 
 const waitForImages = async (root: HTMLElement) => {
   const images = Array.from(root.querySelectorAll("img"));
@@ -234,7 +215,7 @@ function ExportCaptureContent() {
 }
 
 function ExportPageContent() {
-  const { chart } = useChartStore();
+  const { chart, hasHydrated } = useChartStore();
   const searchParams = useSearchParams();
   const captureRef = useRef<HTMLDivElement>(null);
   const imageUrlRef = useRef<string | null>(null);
@@ -261,7 +242,7 @@ function ExportPageContent() {
     let cancelled = false;
 
     const generateImage = async () => {
-      if (!captureRef.current) {
+      if (!hasHydrated || !captureRef.current) {
         return;
       }
 
@@ -305,15 +286,7 @@ function ExportPageContent() {
     return () => {
       cancelled = true;
     };
-  }, [chart]);
-
-  useEffect(() => {
-    if (isGenerating) {
-      return;
-    }
-
-    reloadExportOnce();
-  }, [isGenerating]);
+  }, [chart, hasHydrated]);
 
   useEffect(() => {
     return () => {
