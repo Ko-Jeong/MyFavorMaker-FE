@@ -5,6 +5,7 @@ import {
   useMemo,
   useRef,
   useState,
+  Suspense,
   type KeyboardEvent,
   type MouseEvent,
   type ReactNode,
@@ -95,7 +96,7 @@ function SortableCard({
  * [담당 B] 취향표 편집·생성 (시안: "커스텀 취향표 진입" / "생성 중")
  * 제목 편집 + 카드들 편집 + 칸 추가 + Done!(→ /preview)
  */
-export default function EditorPage() {
+function EditorPageContent() {
   const { chart, setTitle, addCard, loadChart, reset } = useChartStore();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -300,5 +301,13 @@ export default function EditorPage() {
       )}
       <PageNavigation previous={{ href: "/charts", label: "이전" }} />
     </div>
+  );
+}
+
+export default function EditorPage() {
+  return (
+    <Suspense fallback={<div className="flex flex-1" />}>
+      <EditorPageContent />
+    </Suspense>
   );
 }

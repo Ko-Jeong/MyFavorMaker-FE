@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Download, Minus, Minimize2, Plus } from "lucide-react";
 import { toPng } from "html-to-image";
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { useChartStore } from "@/store/useChartStore";
 import CharacterCardView from "@/components/chart/CharacterCardView";
 import PageNavigation from "@/components/ui/PageNavigation";
@@ -162,7 +162,7 @@ function ExportCaptureContent() {
   );
 }
 
-export default function ExportPage() {
+function ExportPageContent() {
   const { chart } = useChartStore();
   const searchParams = useSearchParams();
   const captureRef = useRef<HTMLDivElement>(null);
@@ -402,5 +402,13 @@ export default function ExportPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function ExportPage() {
+  return (
+    <Suspense fallback={<div className="flex flex-1" />}>
+      <ExportPageContent />
+    </Suspense>
   );
 }

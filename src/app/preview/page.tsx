@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { useChartStore } from "@/store/useChartStore";
 import CharacterCardView from "@/components/chart/CharacterCardView";
@@ -14,7 +15,7 @@ import {
  * 읽기전용 카드 확인 + 이전/다음 이동.
  * 이전 → /editor, 다음 → /export
  */
-export default function PreviewPage() {
+function PreviewPageContent() {
   const { chart } = useChartStore();
   const searchParams = useSearchParams();
   const source = getChartEntrySource(searchParams.get("source"));
@@ -40,5 +41,13 @@ export default function PreviewPage() {
         next={{ href: exportHref, label: "다음" }}
       />
     </div>
+  );
+}
+
+export default function PreviewPage() {
+  return (
+    <Suspense fallback={<div className="flex flex-1" />}>
+      <PreviewPageContent />
+    </Suspense>
   );
 }
