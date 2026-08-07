@@ -29,7 +29,8 @@ const reloadExportOnce = () => {
   }
 
   url.searchParams.set(EXPORT_RELOAD_PARAM, "1");
-  window.location.replace(url.toString());
+  window.history.replaceState(null, "", url.toString());
+  window.location.reload();
   return true;
 };
 
