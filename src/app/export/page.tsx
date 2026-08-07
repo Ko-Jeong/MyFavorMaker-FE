@@ -157,7 +157,7 @@ function ExportCaptureContent() {
           ))}
         </div>
       </div>
-      <p className="mt-4 text-xs text-zinc-400">cpmaker.vercel.app</p>
+      <p className="mt-4 text-xs text-zinc-400">cp-maker.vercel.app</p>
     </div>
   );
 }
@@ -180,7 +180,7 @@ function ExportPageContent() {
     return typeof navigator.share === "function" && isTouchDevice;
   });
   const [previewScale, setPreviewScale] = useState(1);
-  const shareText = "cpmaker.vercel.app";
+  const shareText = "cp-maker.vercel.app";
   const source = getChartEntrySource(searchParams.get("source"));
   const groupId = searchParams.get("group");
   const previewHref = getChartEntryHref("/preview", source, groupId ?? undefined);
