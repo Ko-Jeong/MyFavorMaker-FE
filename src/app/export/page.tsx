@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Download, Minus, Minimize2, Plus } from "lucide-react";
-import { toPng } from "html-to-image";
+import { toBlob } from "html-to-image";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { useChartStore } from "@/store/useChartStore";
 import CharacterCardView from "@/components/chart/CharacterCardView";
@@ -15,6 +15,7 @@ import {
 } from "@/lib/chart-entry";
 
 const CAPTURE_WIDTH = 780;
+const EXPORT_IMAGE_EXTENSION = "jpg";
 
 const waitForImages = async (root: HTMLElement) => {
   const images = Array.from(root.querySelectorAll("img"));
@@ -166,6 +167,7 @@ function ExportPageContent() {
   const { chart } = useChartStore();
   const searchParams = useSearchParams();
   const captureRef = useRef<HTMLDivElement>(null);
+  const imageUrlRef = useRef<string | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(true);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
@@ -193,20 +195,35 @@ function ExportPageContent() {
         return;
       }
 
+      if (imageUrlRef.current) {
+        URL.revokeObjectURL(imageUrlRef.current);
+        imageUrlRef.current = null;
+      }
+      setImageUrl(null);
       setIsGenerating(true);
 
       try {
         await document.fonts.ready;
         await waitForImages(captureRef.current);
-        const nextImageUrl = await toPng(captureRef.current, {
+        const imageBlob = await toBlob(captureRef.current, {
           backgroundColor: "#ffffff",
           cacheBust: true,
-          pixelRatio: 2,
+          pixelRatio: 1.5,
           width: CAPTURE_WIDTH,
+          type: "image/jpeg",
+          quality: 0.85,
         });
+        if (!imageBlob) {
+          throw new Error("Export image blob was not created");
+        }
+
+        const nextImageUrl = URL.createObjectURL(imageBlob);
 
         if (!cancelled) {
+          imageUrlRef.current = nextImageUrl;
           setImageUrl(nextImageUrl);
+        } else {
+          URL.revokeObjectURL(nextImageUrl);
         }
       } catch (error) {
         console.error("Failed to generate export image", error);
@@ -227,21 +244,26 @@ function ExportPageContent() {
     };
   }, [chart]);
 
-  const handleSave = async () => {
+  useEffect(() => {
+    return () => {
+      if (imageUrlRef.current) {
+        URL.revokeObjectURL(imageUrlRef.current);
+      }
+    };
+  }, []);
+
+  const handleSave = () => {
     if (!imageUrl) {
       return;
     }
 
     try {
-      const response = await fetch(imageUrl);
-      const blobUrl = URL.createObjectURL(await response.blob());
       const link = document.createElement("a");
-      link.href = blobUrl;
-      link.download = `${chart.title || "my-chart"}.png`;
+      link.href = imageUrl;
+      link.download = `${chart.title || "my-chart"}.${EXPORT_IMAGE_EXTENSION}`;
       document.body.appendChild(link);
       link.click();
       link.remove();
-      setTimeout(() => URL.revokeObjectURL(blobUrl), 0);
     } catch (error) {
       console.error("Failed to save export image", error);
     }
@@ -256,9 +278,11 @@ function ExportPageContent() {
       try {
         const response = await fetch(imageUrl);
         const blob = await response.blob();
-        const file = new File([blob], `${chart.title || "my-chart"}.png`, {
-          type: "image/png",
-        });
+        const file = new File(
+          [blob],
+          `${chart.title || "my-chart"}.${EXPORT_IMAGE_EXTENSION}`,
+          { type: "image/jpeg" },
+        );
 
         if (navigator.canShare?.({ files: [file] })) {
           await navigator.share({
