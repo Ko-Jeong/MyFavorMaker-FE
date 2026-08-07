@@ -11,6 +11,31 @@
   font-display: swap;
 }
 
+/* 타이틀 폰트: GMarketSans */
+@font-face {
+  font-family: "GMarketSans";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansLight.woff")
+    format("woff");
+  font-weight: 300;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "GMarketSans";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff")
+    format("woff");
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "GMarketSans";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansBold.woff")
+    format("woff");
+  font-weight: 700;
+  font-display: swap;
+}
+
 :root {
   /* 앱(모바일 프레임) 내부 색 */
   --background: #ffffff;
@@ -19,6 +44,10 @@
   --frame-outside: #ffffff;
   /* 앱 고정 폭 (iPhone 기준) */
   --app-width: 390px;
+  /* 랜딩 이후 페이지 타이틀 크기 */
+  --title-size: 23px;
+  --title-weight: 500;
+  --title-letter-spacing: -0.04em;
 }
 
 @theme inline {
@@ -29,8 +58,10 @@
   /* 기본 폰트 = Pretendard */
   --font-sans: "Pretendard Variable", Pretendard, -apple-system, system-ui,
     sans-serif;
-  /* 타이틀 폰트 = SlowGothic */
-  --font-title: "SlowGothic", "Pretendard Variable", sans-serif;
+  /* 타이틀 폰트 = GMarketSans */
+  --font-title: "GMarketSans", "Pretendard Variable", sans-serif;
+  /* 랜딩 전용 폰트 = SlowGothic */
+  --font-landing-title: "SlowGothic", "Pretendard Variable", sans-serif;
 }
 
 html,
@@ -105,4 +136,11 @@ body {
 /* 모든 화면 공통 패딩 — 여기 한 곳만 바꾸면 전체 페이지에 반영됨 */
 @utility screen-pad {
   padding: 1.5rem 1.75rem; /* 상하 24px(py-6) · 좌우 28px(px-7) */
+}
+
+@utility page-title {
+  font-family: var(--font-title);
+  font-size: var(--title-size);
+  font-weight: var(--title-weight);
+  letter-spacing: var(--title-letter-spacing);
 }

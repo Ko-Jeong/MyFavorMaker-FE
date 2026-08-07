@@ -144,7 +144,7 @@ function ExportCaptureContent() {
 
   return (
     <div className="w-[780px] bg-white px-6 py-5 text-zinc-900">
-      <p className="mb-4 text-[28px] font-bold">{chart.title}</p>
+      <p className="page-title mb-4">{chart.title}</p>
       <div className="grid grid-cols-2 gap-4">
         <div className="flex flex-col gap-4">
           {leftColumnCards.map((card) => (
@@ -292,7 +292,7 @@ export default function ExportPage() {
 
   return (
     <div className="screen-pad select-none flex flex-1 flex-col">
-      <h1 className="font-title text-[30px]">취향표 저장과 공유</h1>
+      <h1 className="page-title">취향표 저장과 공유</h1>
       <p className="mt-2 text-sm text-zinc-500">이미지를 눌러 확인해 보세요</p>
 
       {isGenerating ? (

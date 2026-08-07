@@ -201,7 +201,7 @@ export default function EditorPage() {
           >
             <span
               ref={titleMeasureRef}
-              className="pointer-events-none absolute -z-10 whitespace-pre font-title text-[30px] opacity-0"
+              className="page-title pointer-events-none absolute -z-10 whitespace-pre opacity-0"
             >
               {displayTitle}
             </span>
@@ -212,15 +212,15 @@ export default function EditorPage() {
                 onChange={(e) => setTitle(e.target.value)}
                 onBlur={() => setIsEditingTitle(false)}
                 onKeyDown={stopTitleEditOnEnter}
-                className="block w-full min-w-0 overflow-hidden text-ellipsis whitespace-nowrap font-title text-[30px] text-zinc-900 placeholder:text-zinc-400 outline-none"
+                className="page-title block w-full min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-zinc-900 placeholder:text-zinc-400 outline-none"
                 placeholder="나의 취향표"
               />
             ) : (
               <h1
                 className={
                   trimmedTitle
-                    ? "truncate font-title text-[30px] text-zinc-900"
-                    : "truncate font-title text-[30px] text-zinc-400"
+                    ? "page-title truncate text-zinc-900"
+                    : "page-title truncate text-zinc-400"
                 }
               >
                 {displayTitle}
