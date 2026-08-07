@@ -40,6 +40,7 @@ function PencilIcon() {
 export default function CharacterCardEdit({ card }: { card: CharacterCard }) {
   const { updateCard, removeCard } = useChartStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const photoRequestIdRef = useRef(0);
   const nameInputRef = useRef<HTMLInputElement>(null);
   const commentTextareaRef = useRef<HTMLTextAreaElement>(null);
   const nameMeasureRef = useRef<HTMLSpanElement>(null);
@@ -58,13 +59,19 @@ export default function CharacterCardEdit({ card }: { card: CharacterCard }) {
 
   const setPhoto = (file?: File) => {
     if (!file) return;
+    const requestId = ++photoRequestIdRef.current;
 
     const reader = new FileReader();
     reader.onload = () => {
       const result = reader.result;
       if (typeof result !== "string") return;
+      if (requestId !== photoRequestIdRef.current) return;
+
+      // 사진을 먼저 반영해 사용자가 바로 다음 페이지로 이동해도 누락되지 않게 합니다.
+      updateCard(card.id, { photoUrl: result });
 
       void optimizeImageSource(result).then((optimized) => {
+        if (requestId !== photoRequestIdRef.current) return;
         updateCard(card.id, { photoUrl: optimized });
       });
     };
