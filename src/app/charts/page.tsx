@@ -34,7 +34,7 @@ export default function ChartsPage() {
     <div className="screen-pad select-none flex h-dvh flex-col">
       {/* 헤더 (고정) */}
       <div className="relative shrink-0 pr-[84px]">
-        <h1 className="font-title text-[30px]">불러오기</h1>
+        <h1 className="page-title">불러오기</h1>
         <div className="absolute right-0 top-1/2 flex -translate-y-1/2 justify-end">
           <Button onClick={createNew} className="w-[72px]">
             + New
