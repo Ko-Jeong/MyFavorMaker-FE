@@ -20,6 +20,9 @@ const syncTextareaHeight = (element: HTMLTextAreaElement) => {
   element.style.height = `${element.scrollHeight}px`;
 };
 
+const MAX_PHOTO_SIZE = 1024;
+const PHOTO_QUALITY = 0.82;
+
 function PencilIcon() {
   return (
     <img
@@ -61,9 +64,36 @@ export default function CharacterCardEdit({ card }: { card: CharacterCard }) {
     const reader = new FileReader();
     reader.onload = () => {
       const result = reader.result;
-      if (typeof result === "string") {
+      if (typeof result !== "string") return;
+
+      const image = new Image();
+      image.onload = () => {
+        const scale = Math.min(
+          1,
+          MAX_PHOTO_SIZE / Math.max(image.naturalWidth, image.naturalHeight),
+        );
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
+        canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+
+        const context = canvas.getContext("2d");
+        if (!context) {
+          updateCard(card.id, { photoUrl: result });
+          return;
+        }
+
+        context.drawImage(image, 0, 0, canvas.width, canvas.height);
+        updateCard(card.id, {
+          photoUrl: canvas.toDataURL("image/jpeg", PHOTO_QUALITY),
+        });
+      };
+      image.onerror = () => {
         updateCard(card.id, { photoUrl: result });
-      }
+      };
+      image.src = result;
+    };
+    reader.onerror = () => {
+      reader.abort();
     };
     reader.readAsDataURL(file);
   };
