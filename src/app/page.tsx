@@ -70,9 +70,12 @@ export default function LandingPage() {
         </div>
 
         <div className="mt-6 flex flex-col items-center gap-1">
-          <div className="rounded-[50px] bg-[#E6E5EB]/30 px-6 pt-1 pb-0.4 font-title text-[19px] text-[#414141]">
+          <Link
+            href="/charts"
+            className="rounded-[50px] bg-[#E6E5EB]/30 px-6 pt-1 pb-0.4 font-title text-[19px] text-[#414141]"
+          >
             CREATE YOURS
-          </div>
+          </Link>
           <Link href="/charts" className="font-title text-[17px] text-primary">
             click!
           </Link>
