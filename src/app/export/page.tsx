@@ -227,15 +227,24 @@ function ExportPageContent() {
     };
   }, [chart]);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!imageUrl) {
       return;
     }
 
-    const link = document.createElement("a");
-    link.href = imageUrl;
-    link.download = `${chart.title || "my-chart"}.png`;
-    link.click();
+    try {
+      const response = await fetch(imageUrl);
+      const blobUrl = URL.createObjectURL(await response.blob());
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.download = `${chart.title || "my-chart"}.png`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 0);
+    } catch (error) {
+      console.error("Failed to save export image", error);
+    }
   };
 
   const handleShareX = async () => {
