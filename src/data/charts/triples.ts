@@ -1,0 +1,32 @@
+import { type IdolGroup } from "@/types/chart";
+
+export const triples: IdolGroup = {
+  id: "triples",
+  title: "tripleS",
+  members: [
+    { name: "윤서연", photoUrl: "/photos/triples/1.jpg" },
+    { name: "정혜린", photoUrl: "/photos/triples/2.jpg" },
+    { name: "이지우", photoUrl: "/photos/triples/3.jpg" },
+    { name: "김채연", photoUrl: "/photos/triples/4.jpg" },
+    { name: "김유연", photoUrl: "/photos/triples/5.jpg" },
+    { name: "김수민", photoUrl: "/photos/triples/6.jpg" },
+    { name: "김나경", photoUrl: "/photos/triples/7.jpg" },
+    { name: "공유빈", photoUrl: "/photos/triples/8.jpg" },
+    { name: "카에데", photoUrl: "/photos/triples/9.jpg" },
+    { name: "서다현", photoUrl: "/photos/triples/10.jpg" },
+    { name: "코토네", photoUrl: "/photos/triples/11.jpg" },
+    { name: "곽연지", photoUrl: "/photos/triples/12.jpg" },
+    { name: "니엔", photoUrl: "/photos/triples/13.jpg" },
+    { name: "박소현", photoUrl: "/photos/triples/14.jpg" },
+    { name: "신위", photoUrl: "/photos/triples/15.jpg" },
+    { name: "마유", photoUrl: "/photos/triples/16.jpg" },
+    { name: "린", photoUrl: "/photos/triples/17.jpg" },
+    { name: "주빈", photoUrl: "/photos/triples/18.jpg" },
+    { name: "정하연", photoUrl: "/photos/triples/19.jpg" },
+    { name: "박시온", photoUrl: "/photos/triples/20.jpg" },
+    { name: "김채원", photoUrl: "/photos/triples/21.jpg" },
+    { name: "설린", photoUrl: "/photos/triples/22.jpg" },
+    { name: "서아", photoUrl: "/photos/triples/23.jpg" },
+    { name: "지연", photoUrl: "/photos/triples/24.jpg" },
+  ],
+};
