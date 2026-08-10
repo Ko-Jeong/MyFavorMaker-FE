@@ -12,10 +12,16 @@ export default function CharacterCardView({
   card,
   className = "",
   shadow = true,
+  imageLoading,
+  imageDecoding,
+  imageFetchPriority,
 }: {
   card: CharacterCard;
   className?: string;
   shadow?: boolean;
+  imageLoading?: "eager" | "lazy";
+  imageDecoding?: "async" | "sync" | "auto";
+  imageFetchPriority?: "high" | "low" | "auto";
 }) {
   const right = rightPercent(card);
   const comment = card.comment?.trim() ?? "";
@@ -29,6 +35,9 @@ export default function CharacterCardView({
             src={card.photoUrl}
             alt={card.name}
             className="h-full w-full object-cover"
+            loading={imageLoading}
+            decoding={imageDecoding}
+            fetchPriority={imageFetchPriority}
           />
         </div>
         <div>

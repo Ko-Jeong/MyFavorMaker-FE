@@ -67,12 +67,12 @@ export default function CharacterCardEdit({ card }: { card: CharacterCard }) {
       if (typeof result !== "string") return;
       if (requestId !== photoRequestIdRef.current) return;
 
-      // 사진을 먼저 반영해 사용자가 바로 다음 페이지로 이동해도 누락되지 않게 합니다.
-      updateCard(card.id, { photoUrl: result });
-
       void optimizeImageSource(result).then((optimized) => {
         if (requestId !== photoRequestIdRef.current) return;
         updateCard(card.id, { photoUrl: optimized });
+      }).catch(() => {
+        if (requestId !== photoRequestIdRef.current) return;
+        updateCard(card.id, { photoUrl: result });
       });
     };
     reader.onerror = () => {

@@ -13,7 +13,6 @@ import {
   getChartEntryHref,
   getChartEntrySource,
 } from "@/lib/chart-entry";
-import { optimizeImageSource } from "@/lib/optimize-image";
 
 const CAPTURE_WIDTH = 780;
 const EXPORT_IMAGE_EXTENSION = "jpg";
@@ -23,19 +22,29 @@ const waitForImages = async (root: HTMLElement) => {
 
   await Promise.all(
     images.map((image) => {
-      if (image.complete) {
+      if (image.complete && image.naturalWidth > 0) {
         return Promise.resolve();
       }
 
       return new Promise<void>((resolve) => {
         const finish = () => {
+          if (!image.complete || image.naturalWidth === 0) {
+            return;
+          }
+
           image.removeEventListener("load", finish);
-          image.removeEventListener("error", finish);
+          image.removeEventListener("error", fail);
           resolve();
         };
 
-        image.addEventListener("load", finish, { once: true });
-        image.addEventListener("error", finish, { once: true });
+        const fail = () => {
+          image.removeEventListener("load", finish);
+          image.removeEventListener("error", fail);
+          resolve();
+        };
+
+        image.addEventListener("load", finish);
+        image.addEventListener("error", fail, { once: true });
       });
     }),
   );
@@ -46,19 +55,6 @@ const waitForImages = async (root: HTMLElement) => {
         ? image.decode().catch(() => undefined)
         : Promise.resolve(),
     ),
-  );
-};
-
-const optimizeCaptureImages = async (root: HTMLElement) => {
-  const images = Array.from(root.querySelectorAll("img"));
-
-  await Promise.all(
-    images.map(async (image) => {
-      const source = image.currentSrc || image.src;
-      if (!source) return;
-
-      image.src = await optimizeImageSource(source);
-    }),
   );
 };
 
@@ -191,12 +187,26 @@ function ExportCaptureContent() {
       <div className="grid grid-cols-2 gap-4">
         <div className="flex flex-col gap-4">
           {leftColumnCards.map((card) => (
-            <CharacterCardView key={card.id} card={card} shadow={false} />
+            <CharacterCardView
+              key={card.id}
+              card={card}
+              shadow={false}
+              imageLoading="eager"
+              imageDecoding="sync"
+              imageFetchPriority="high"
+            />
           ))}
         </div>
         <div className="flex flex-col gap-4">
           {rightColumnCards.map((card) => (
-            <CharacterCardView key={card.id} card={card} shadow={false} />
+            <CharacterCardView
+              key={card.id}
+              card={card}
+              shadow={false}
+              imageLoading="eager"
+              imageDecoding="sync"
+              imageFetchPriority="high"
+            />
           ))}
         </div>
       </div>
@@ -246,7 +256,6 @@ function ExportPageContent() {
 
       try {
         await document.fonts.ready;
-        await optimizeCaptureImages(captureRef.current);
         await waitForImages(captureRef.current);
         const imageBlob = await createExportBlob(captureRef.current);
 
