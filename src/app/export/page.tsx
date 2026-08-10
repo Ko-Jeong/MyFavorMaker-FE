@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { Download, Minus, Minimize2, Plus } from "lucide-react";
+import { Download, Minus, Minimize2, Plus, RotateCcw } from "lucide-react";
 import { toBlob } from "html-to-image";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { useChartStore } from "@/store/useChartStore";
@@ -424,6 +424,16 @@ function ExportPageContent() {
                   공유하기
                 </span>
               </button>
+            </div>
+
+            <div className="mt-5 flex justify-center">
+              <Link
+                href="/charts"
+                className="inline-flex items-center gap-1.5 text-[13px] text-zinc-500"
+              >
+                <RotateCcw className="h-3 w-3" strokeWidth={2.2} />
+                다시 하기
+              </Link>
             </div>
           </div>
         </div>
