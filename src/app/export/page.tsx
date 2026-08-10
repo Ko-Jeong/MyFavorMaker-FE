@@ -187,12 +187,26 @@ function ExportCaptureContent() {
       <div className="grid grid-cols-2 gap-4">
         <div className="flex flex-col gap-4">
           {leftColumnCards.map((card) => (
-            <CharacterCardView key={card.id} card={card} shadow={false} />
+            <CharacterCardView
+              key={card.id}
+              card={card}
+              shadow={false}
+              imageLoading="eager"
+              imageDecoding="sync"
+              imageFetchPriority="high"
+            />
           ))}
         </div>
         <div className="flex flex-col gap-4">
           {rightColumnCards.map((card) => (
-            <CharacterCardView key={card.id} card={card} shadow={false} />
+            <CharacterCardView
+              key={card.id}
+              card={card}
+              shadow={false}
+              imageLoading="eager"
+              imageDecoding="sync"
+              imageFetchPriority="high"
+            />
           ))}
         </div>
       </div>
