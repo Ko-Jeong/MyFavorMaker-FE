@@ -22,19 +22,29 @@ const waitForImages = async (root: HTMLElement) => {
 
   await Promise.all(
     images.map((image) => {
-      if (image.complete) {
+      if (image.complete && image.naturalWidth > 0) {
         return Promise.resolve();
       }
 
       return new Promise<void>((resolve) => {
         const finish = () => {
+          if (!image.complete || image.naturalWidth === 0) {
+            return;
+          }
+
           image.removeEventListener("load", finish);
-          image.removeEventListener("error", finish);
+          image.removeEventListener("error", fail);
           resolve();
         };
 
-        image.addEventListener("load", finish, { once: true });
-        image.addEventListener("error", finish, { once: true });
+        const fail = () => {
+          image.removeEventListener("load", finish);
+          image.removeEventListener("error", fail);
+          resolve();
+        };
+
+        image.addEventListener("load", finish);
+        image.addEventListener("error", fail, { once: true });
       });
     }),
   );
