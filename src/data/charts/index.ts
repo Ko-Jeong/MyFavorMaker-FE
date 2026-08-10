@@ -14,9 +14,11 @@ import { cortis } from "./cortis";
 import { cravity } from "./cravity";
 import { day6 } from "./day6";
 import { enhypen } from "./enhypen";
+import { exo } from "./exo";
 import { flareu } from "./flareu";
 import { hearts2hearts } from "./hearts2hearts";
 import { idid } from "./idid";
+import { idntt } from "./idntt";
 import { illit } from "./illit";
 import { itzy } from "./itzy";
 import { izna } from "./izna";
@@ -35,6 +37,8 @@ import { riize } from "./riize";
 import { seventeen } from "./seventeen";
 import { straykids } from "./straykids";
 import { theboyz } from "./theboyz";
+import { treasure } from "./treasure";
+import { triples } from "./triples";
 import { twice } from "./twice";
 import { tws } from "./tws";
 import { txt } from "./txt";
@@ -59,9 +63,11 @@ export const groups: IdolGroup[] = [
   cravity,
   day6,
   enhypen,
+  exo,
   flareu,
   hearts2hearts,
   idid,
+  idntt,
   illit,
   itzy,
   izna,
@@ -80,6 +86,8 @@ export const groups: IdolGroup[] = [
   seventeen,
   straykids,
   theboyz,
+  treasure,
+  triples,
   twice,
   tws,
   txt,
