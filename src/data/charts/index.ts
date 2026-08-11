@@ -1,5 +1,6 @@
 import { type IdolGroup } from "@/types/chart";
 
+import { aen } from "./aen";
 import { aespa } from "./aespa";
 import { ald1 } from "./ald1";
 import { and2ble } from "./and2ble";
@@ -22,9 +23,12 @@ import { idntt } from "./idntt";
 import { illit } from "./illit";
 import { itzy } from "./itzy";
 import { izna } from "./izna";
+import { kickflip } from "./kickflip";
 import { kiiikiii } from "./kiiikiii";
+import { lesserafim } from "./lesserafim";
 import { lngshot } from "./lngshot";
 import { major82 } from "./major82";
+import { mamamoo } from "./mamamoo";
 import { monstax } from "./monstax";
 import { nct127 } from "./nct127";
 import { nctdream } from "./nctdream";
@@ -49,6 +53,7 @@ import { zb1 } from "./zb1";
 //   1) 위에 import 추가:  import { newgroup } from "./newgroup";
 //   2) 아래 배열에 추가:  newgroup
 export const groups: IdolGroup[] = [
+  aen,
   aespa,
   ald1,
   and2ble,
@@ -71,9 +76,12 @@ export const groups: IdolGroup[] = [
   illit,
   itzy,
   izna,
+  kickflip,
   kiiikiii,
+  lesserafim,
   lngshot,
   major82,
+  mamamoo,
   monstax,
   nct127,
   nctdream,
