@@ -58,6 +58,70 @@ const waitForImages = async (root: HTMLElement) => {
   );
 };
 
+const blobToDataUrl = (blob: Blob) =>
+  new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      if (typeof reader.result === "string") {
+        resolve(reader.result);
+        return;
+      }
+
+      reject(new Error("Image data URL was not created"));
+    };
+    reader.onerror = () => {
+      reject(reader.error ?? new Error("Image blob could not be read"));
+    };
+    reader.readAsDataURL(blob);
+  });
+
+const fetchImageDataUrl = async (source: string) => {
+  let lastError: unknown;
+
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    try {
+      const response = await fetch(source, { cache: "force-cache" });
+
+      if (!response.ok) {
+        throw new Error(`Image request failed: ${response.status}`);
+      }
+
+      return await blobToDataUrl(await response.blob());
+    } catch (error) {
+      lastError = error;
+    }
+  }
+
+  throw lastError instanceof Error
+    ? lastError
+    : new Error("Image data URL was not created");
+};
+
+const inlineCaptureImages = async (root: HTMLElement) => {
+  const images = Array.from(root.querySelectorAll("img"));
+  const dataUrlCache = new Map<string, Promise<string>>();
+
+  await Promise.all(
+    images.map(async (image) => {
+      const source = image.currentSrc || image.src;
+
+      if (!source || source.startsWith("data:")) {
+        return;
+      }
+
+      let dataUrlPromise = dataUrlCache.get(source);
+      if (!dataUrlPromise) {
+        dataUrlPromise = fetchImageDataUrl(source);
+        dataUrlCache.set(source, dataUrlPromise);
+      }
+
+      image.src = await dataUrlPromise;
+      await image.decode?.();
+    }),
+  );
+};
+
 const createExportBlob = async (node: HTMLElement) => {
   let lastError: unknown;
 
@@ -257,6 +321,7 @@ function ExportPageContent() {
       try {
         await document.fonts.ready;
         await waitForImages(captureRef.current);
+        await inlineCaptureImages(captureRef.current);
         const imageBlob = await createExportBlob(captureRef.current);
 
         const nextImageUrl = URL.createObjectURL(imageBlob);
